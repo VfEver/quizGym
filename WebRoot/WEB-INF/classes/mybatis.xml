@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+	PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<typeAliases>
+		<typeAlias type="com.quizGym.entity.Type" alias="type"/>
+		<typeAlias type="com.quizGym.entity.Question" alias="question"/>
+		<typeAlias type="com.quizGym.entity.User" alias="user"/>
+	</typeAliases>
+	<mappers>
+		<mapper resource="com/quizGym/entity/questionMapper.xml"/>
+		<mapper resource="com/quizGym/entity/userMapper.xml"/>
+		<mapper resource="com/quizGym/entity/typeMapper.xml"/>
+	</mappers>
+</configuration>

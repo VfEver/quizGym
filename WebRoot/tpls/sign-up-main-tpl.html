@@ -1,0 +1,24 @@
+<div class="main-sign-up" ng-controller="SignupController">
+	<div class="container">
+		<h1>Create a free account</h1>
+		<hr />
+		<div class="col-md-7">
+			<form>
+				<input type="email" placeholder="Email" class="form-control input-lg" name="email" ng-model="signupUserEmail">
+				<input type="text" placeholder="User Name" class="form-control input-lg" name="username" ng-model="signupUserName">
+				<input type="password" placeholder="Password" class="form-control input-lg" name="psw" ng-model="signupUserPassword">
+				<input type="password" placeholder="Confirm Password" class="form-control input-lg" name="cpsw" ng-model="signupUserConfirm">
+				<button class="btn btn-lg btn-danger"  ng-click="signupCheck()">
+					<span class="glyphicon glyphicon-pencil sign-up-icon"></span>
+					Sign up
+				</button>
+			</form>
+		</div>
+		<div class="col-md-5">
+			<img src="ui/brain.png" width="400"> 
+		</div>
+	</div>
+
+	
+
+</div>

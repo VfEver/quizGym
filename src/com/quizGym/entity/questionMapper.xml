@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+	<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.quizGym.entity.Question">
+	<resultMap type="question" id="questionMap">
+		<id property="id" column="question_id"/>
+		<result property="name" column="question_name"/>
+		<result property="answerA" column="answerA"/>
+		<result property="answerB" column="answerB"/>
+		<result property="answerC" column="answerC"/>
+		<result property="answerD" column="answerD"/>
+		<result property="rightAnswer" column="right_answer"/>
+		<result property="reason" column="reason"/>
+	</resultMap>
+	<!-- 插入题目 -->
+	<insert id="saveQuestion" parameterType="question">
+		insert into question(question_name,answerA,answerB,answerC,answerD,right_answer,reason,qt_id)
+		values(#{name},#{answerA},#{answerB},#{answerC},#{answerD},#{rightAnswer},#{reason},#{type.id},)
+	</insert>
+	<!-- 随机查找一定数量的题目 -->
+	<select id="randFindQuestion" parameterType="map" resultMap="questionMap">
+		select q.question_id, q.question_name, q.answerA,q.answerB, q.answerC, q.answerD, q.right_answer, q.reason
+		from question q inner join types t
+		on q.qt_id = t.types_id
+		and t.types_name = #{type}
+		order by rand()
+		limit 0,5
+	</select>
+</mapper>

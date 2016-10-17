@@ -1,0 +1,22 @@
+<div class="main-login" ng-controller="LoginController">
+	<div class="container">
+		<h1>Member login</h1>
+		<hr />
+		<div class="col-md-7">
+			<form>
+				<input type="text" placeholder="User Name" class="form-control input-lg" name="username" ng-model="loginUserName">
+				<input type="password" placeholder="Password" class="form-control input-lg" name="psw" ng-model="loginUserPassword">
+				<button class="btn btn-lg btn-danger" ng-click="loginCheck()">
+					<span class="glyphicon glyphicon-log-in login-icon"></span>
+					Login
+				</button>
+			</form>
+		</div>
+		<div class="col-md-5 brain-icon">
+			<img src="ui/brain.png" width="400"> 
+		</div>
+	</div>
+
+	
+
+</div>

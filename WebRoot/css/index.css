@@ -1,0 +1,253 @@
+* {
+	margin: 0;
+	padding: 0;
+}
+body {
+	font-family: Verdana;
+	overflow: hidden;
+}
+html, body {
+	width: 100%;
+	height: 100%;
+}
+.top-nav {
+	background: #000;
+	height: 95px;
+}
+.container {
+
+}
+.nav-info {
+
+}
+
+/*nav-top*/
+.sign-up-icon, .login-icon {
+	color: #888;
+	font-size: 20px;
+	transition: .5s all ease;
+	cursor: pointer;
+}
+.sign-up, .login {
+	height: 95px;
+	line-height: 95px;
+}
+.sign-up:hover .sign-up-link, 
+.sign-up:hover .sign-up-icon,
+.login:hover .login-link, 
+.login:hover .login-icon {
+	text-decoration: none;
+	color: #fff;
+}
+.login:hover .login-link, .sign-up:hover .sign-up-link {
+	text-decoration: none;
+	color: #fff;
+}
+.login-link, .sign-up-link {
+	font-size: 20px;
+	letter-spacing: 1px;
+	text-decoration: none;
+	color: #888;
+	transition: .5s all ease;
+	margin-right: 20px;
+}
+.nav-mind-dash-icon {
+	cursor: pointer;
+}
+
+/*main*/
+.ng-box-main {
+	height: 100%;
+}
+.welcome-main{
+	background: #000;
+	color: #fff;
+	text-align: center;
+	height: 100%;
+}
+
+.welcome-main h1 {
+	margin-top: 50px;
+}
+.brain-img {
+	width: 500px;
+	height: 400px;
+	margin: 50px auto;
+	background: url('../ui/brain.png') center no-repeat;
+	background-size: 500px 400px;
+	margin-bottom: 100px;
+}
+.welcome-main button {
+	transition: .4s all ease;
+}
+
+/*main-login*/
+.brain-icon {
+	margin-top: 10px;
+}
+.main-login input {
+	margin-top: 10px;
+	margin-bottom: 15px;
+}
+.main-login button {
+	width: 200px;
+	color: #fff;
+	transition: .4s all ease;
+}
+.main-login button:hover {
+	box-shadow: 2px 2px 5px #000;
+}
+.main-login button span {
+	color: #fff;
+	margin-right: 10px;
+	margin-left: -10px;
+}
+
+/*main-sign-up*/
+.main-sign-up input {
+	margin-top: 10px;
+	margin-bottom: 15px;
+}
+.main-sign-up button {
+	width: 200px;
+	color: #fff;
+	transition: .4s all ease;
+}
+.main-sign-up button:hover {
+	box-shadow: 2px 2px 5px #000;
+}
+.main-sign-up button span {
+	color: #fff;
+	margin-right: 10px;
+	margin-left: -10px;
+}
+
+/*quiz-main*/
+.quiz-main {
+	padding-top: 50px;
+	box-sizing: border-box;
+	text-align: center;
+}
+.quiz-main .quiz-item {
+	width: 230px;
+	height: 150px;
+	margin: 20px;
+	font-size: 30px;
+	text-align: center;
+	cursor: pointer;
+	transition: .4s all cubic-bezier(0, 0, 0.4, 1);
+	color: #444;
+}
+.quiz-main .quiz-item hr {
+	margin-top: 0px;
+	margin-bottom: 0px;
+	border: 1.5px solid #999;
+}
+.quiz-main .quiz-item:hover {
+	transform: scale(1.2);
+}
+.box-top {
+	justify-content: space-between;
+	display: -webkit-flex;
+}
+.box-bottom {
+	width: 80%;
+	margin: 10px auto;
+	justify-content: space-around;
+	display: -webkit-flex;
+}
+
+.random-quiz {
+	width: 300px;
+	font-size: 20px;
+	margin-top: 50px;
+	transition: .4s all ease;
+}
+.random-quiz:hover {
+	box-shadow: 2px 2px 5px #000;
+}
+
+/*do-quiz-main*/
+.do-quiz-main {
+	height: 100%;
+	background: -webkit-linear-gradient(rgb(135,132,131), rgb(35,32,31));
+	background: -o-linear-gradient(rgb(135,132,131), rgb(35,32,31));
+	background: linear-gradient(rgb(135,132,131), rgb(35,32,31));
+    font-family: arial;
+}
+
+.do-quiz-main .container {
+	background: #fff;
+	width: 800px;
+	border-radius: 0 0 10px 10px;
+	box-shadow: 5px 5px 15px #000;
+	padding-top: 20px;
+}
+.do-quiz-main .container h2 {
+	color: rgb(12,53,86);
+}
+.do-quiz-main .progress {
+	width: 300px;
+}
+.do-quiz-main .question h3 {
+	margin-top: -10px;
+	display: inline-block;
+	vertical-align: bottom;
+}
+.do-quiz-main .choose-answer {
+	background: rgb(45,43,40);
+	border-radius: 5px;
+	margin-bottom: 30px;
+}
+.do-quiz-main input[type="radio"] {
+	margin-left: 10px;
+}
+.do-quiz-main input[type="radio"]:checked ~ p{
+	color: white
+}
+.do-quiz-main label {
+	background: rgb(35,32,31);
+	margin: 10px;
+	width: 97%;
+	border-radius: 20px;
+	cursor: pointer;
+	box-shadow: -3px 3px 3px #000 inset;
+	transition: all .8s ease;
+}
+.do-quiz-main label:hover {
+	background: rgb(0,0,0);
+}
+.do-quiz-main label p {
+	margin-top: 10px;
+	margin-left: 10px;
+	color: rgb(135,137,138);
+	display: inline-block;
+}
+
+.do-quiz-main .buttons .btn {
+	width: 70px;
+	height: 35px;
+	margin: 10px;
+	transition: all .4s ease;
+	-webkit-transition: all .4s ease;
+	-moz-transition: all .4s ease;
+	-o-transition: all .4s ease;
+}
+.do-quiz-main .buttons .btn:hover {
+	border-radius: 20px;
+}
+.do-quiz-main #checkAnswerBtn {
+	width: 150px;
+}
+
+
+
+/*footer*/
+.footer {
+	height: 150px;
+	background: #000;
+	color: #999;
+	margin-top: -245px;
+}
+
+

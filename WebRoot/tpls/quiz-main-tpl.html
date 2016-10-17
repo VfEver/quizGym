@@ -1,0 +1,34 @@
+<div class="quiz-main" ng-controller="QuizController">
+	<div class="container">
+		<div class="box-top">
+			<div class="quiz-item quiz-photography" ng-click="getQuiz('photography')">
+				<img src="ui/icon 1.png" width="40%">
+				<hr />
+				<p>Photography</p>
+			</div>
+			<div class="quiz-item quiz-music" ng-click="getQuiz('music')">
+				<img src="ui/icon 2.png" width="40%">
+					<hr />
+					<p>Music</p>
+			</div>
+			<div class="quiz-item quiz-science" ng-click="getQuiz('science')">
+				<img src="ui/icon 5.png" width="40%">
+					<hr />
+					<p>Science</p>
+			</div>
+		</div>
+		<div class="box-bottom">
+			<div class="quiz-item quiz-sports" ng-click="getQuiz('sports')">
+				<img src="ui/icon 3.png" width="40%">
+					<hr />
+					<p>Sports</p>
+			</div>
+			<div class="quiz-item quiz-film" ng-click="getQuiz('film')">
+				<img src="ui/icon 4.png" width="40%">
+					<hr />
+					<p>Film</p>
+			</div>
+		</div>
+		<button class="btn btn-lg btn-danger random-quiz" ng-click="getRandom()">Random Quiz</button>
+	</div>
+</div>

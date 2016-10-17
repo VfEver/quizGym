@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
+    <wb-module deploy-name="quizGym">
+        <wb-resource deploy-path="/" source-path="/WebRoot" tag="defaultRootSource"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src"/>
+        <dependent-module archiveName="c3p0-0.9.1.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/quizGym/WebRoot/WEB-INF/lib/c3p0-0.9.1.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="jersey-spring-1.18.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/quizGym/WebRoot/WEB-INF/lib/jersey-spring-1.18.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="spring-web-3.2.5.RELEASE.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/quizGym/WebRoot/WEB-INF/lib/spring-web-3.2.5.RELEASE.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="mybatis-spring-1.1.1.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/quizGym/WebRoot/WEB-INF/lib/mybatis-spring-1.1.1.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <property name="java-output-path" value="/quizGym/WebRoot/WEB-INF/classes"/>
+        <property name="context-root" value="quizGym"/>
+    </wb-module>
+</project-modules>
