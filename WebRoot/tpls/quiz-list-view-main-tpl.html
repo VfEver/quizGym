@@ -1,0 +1,37 @@
+<div class="quiz-list-view-main" ng-controller="QuizListController">
+	<div class="container">
+		<h4>Quiz list:</h4>
+		<hr />
+		<div ng-repeat="item in quizListData" class="quiz-list-item">
+			<p class="quiz-name"><strong>quiz name</strong>: {{item.listName.length > 90 ? item.listName.substr(0, 90) + '...' : item.listName}}</p>
+			<p class="quiz-creator"><strong>creator</strong>: {{item.createrName}}<span class="quiz-time pull-right"><i>create time: {{item.createTime}}</i></span></p>
+		</div>
+		<hr />
+		<button class="btn btn-lg btn-danger" ng-click="randomQuizFn()">Random</button>
+		<button class="btn btn-lg" ng-click="createQuiz()">create a quiz</button>
+	</div>
+	
+	<div class="modal fade" id="createQuizOption">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+	        <h4 class="modal-title">create option</h4>
+	      </div>
+	      <div class="modal-body">
+	        <p>input your quiz name:</p>
+	        <input type="text" class="form-control" ng-model="nameOfQuiz">
+	        <br />
+	        <i>tips: your quiz must with more than 5 questions</i>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+	        <button type="button" class="btn btn-primary" ng-click="createQuizFn()">Create</button>
+	      </div>
+	    </div><!-- /.modal-content -->
+	  </div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
+
+</div>

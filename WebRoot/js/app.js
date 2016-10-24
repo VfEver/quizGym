@@ -72,5 +72,33 @@ angular.module('lApp', ['ui.router', 'controllersModule'])
 					templateUrl: '/quizGym/tpls/footer-tpl.html'
 				}
 			}
-		});
+		})
+		.state('createquiz', {
+			url: '/createquiz',
+			views: {
+				'main': {
+					templateUrl: '/quizGym/tpls/create-quiz-main-tpl.html'
+				},
+				'navinfo': {
+					templateUrl: '/quizGym/tpls/nav-login-tpl.html'
+				},
+				'footer': {
+					templateUrl: '/quizGym/tpls/footer-tpl.html'
+				}
+			}
+		})
+		.state('quizlistview', {
+			url: '/quizlistview',
+			views: {
+				'main': {
+					templateUrl: '/quizGym/tpls/quiz-list-view-main-tpl.html'
+				},
+				'navinfo': {
+					templateUrl: '/quizGym/tpls/nav-login-tpl.html'
+				},
+				'footer': {
+					templateUrl: '/quizGym/tpls/footer-tpl.html'
+				}
+			}
+		})
 }]);

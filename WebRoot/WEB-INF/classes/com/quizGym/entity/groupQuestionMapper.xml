@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+	<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.quizGym.entity.GroupQuestion">
+	<resultMap type="groupQuestion" id="groupQuestionMap">
+		<id property="id" column="group_id"/>
+		<result property="typeID" column="type_id"/>
+		<result property="name" column="group_name"/>
+		<result property="createrName" column="creater_name"/>
+		<result property="createTime" column="create_time"/>
+	</resultMap>
+	
+	<!-- 插入套题信息 -->
+	<insert id="saveGroupQuestion" parameterType="groupQuestion">
+		insert into group_question (group_name, creater_name, create_time, type_id)
+		values (#{name}, #{createrName}, #{createTime}, #{typeID})
+	</insert>
+	
+	<!-- 根据id查询套题信息 -->
+	<select id="findByID" parameterType="map" resultMap="groupQuestionMap">
+		select * 
+		from group_question
+		where group_id = #{id}
+	</select>
+	
+	<!-- 查询最大ID -->
+	<select id="findMaxID" resultType="java.lang.Integer">
+		select max(group_id) from group_question
+	</select>
+	
+	<!-- 将题目信息插入 -->
+	<insert id="saveQuestionContent" parameterType="map">
+		insert into group_content(group_id,question_id)
+		values(#{groupID},#{questionID})
+	</insert>
+	
+	<!-- 查询特定领域下的题目单 -->
+	<select id="findSpecList" parameterType="int" resultMap="groupQuestionMap">
+		select *
+		from group_question
+		where type_id=#{id}
+	</select>
+	
+	<!-- 查询套题内的所有题目 -->
+	<select id="findQuestions" parameterType="int" resultType="int">
+		select question_id
+		from group_content
+		where group_id=#{id}
+	</select>
+	
+	<!-- 根据关键字模糊匹配查询套题题单 -->
+	<select id="findKeyList" parameterType="string" resultMap="groupQuestionMap">
+		select * 
+		from group_question
+		where  group_name like #{name}
+	</select>
+</mapper>

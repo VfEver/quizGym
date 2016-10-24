@@ -1,0 +1,63 @@
+<div class="create-quiz-main" ng-controller="CreateQuizController">
+	<div class="container">
+		<h3>Quiz name: {{listName}}</h3>
+		<!-- <p>The <span id="listIndex">1</span>th:</p> -->
+		<div class="form-group row">
+			<label class="col-md-2">Quiz view:</label>
+			<div class="quiz-view col-md-10" >
+				<button class="btn quiz-question-index" ng-repeat="question in quiz" ng-click="showQuestion($index)" ng-class="{'btn-default': $index != currentIndex}">{{$index + 1}}</button>
+			</div>
+		</div>
+		<hr />
+
+		<div class="questions-group">
+			<div class="question-info" ng-repeat="question in quiz" ng-show="$index == currentIndex">
+				<div class="form-group row" >
+					<label for="questionDetail" class="col-md-2">Detail:</label>
+					<div class="col-md-10">
+						<textarea name="" id="questionDetail" cols="30" rows="4" class="form-control" ng-model="question.question"></textarea>
+					</div>
+				</div>
+
+				<div class="question-options row">
+						<label class="col-md-2">Answers:</label>
+						<div class="col-md-10 ">
+							<input type="text" placeholder="Option A:" class="form-control question-option" ng-model="question.options[0]">
+							<input type="text" placeholder="Option B:" class="form-control question-option" ng-model="question.options[1]">
+							<input type="text" placeholder="Option C:" class="form-control question-option" ng-model="question.options[2]">
+							<input type="text" placeholder="Option D:" class="form-control question-option" ng-model="question.options[3]">
+						</div>
+				</div>
+
+				<div class="form-group create-option row form-group">
+					<label class="col-md-2">Correct answer:</label>
+					<div class="col-md-2">
+						<select class="form-control" ng-model="question.correctAnswer">
+							<option>A</option>
+							<option>B</option>
+							<option>C</option>
+							<option>D</option>
+						</select>
+					</div>
+				</div>
+				<div class="form-group row question-description" >
+					<label for="questionDetail" class="col-md-2 col-form-label">Description:</label>
+					<div class="col-md-10">
+						<textarea name="" id="questionDescription" cols="30" rows="4" class="form-control" ng-model="question.reason"></textarea>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+		<hr class="buttons-divider"/>
+		<div class="form-group questions-function-buttons row">
+			<div class="col-md-4 col-md-offset-2">
+				<button class="btn btn-primary add-question" ng-click="addNewQuestion()">add question</button>
+				<button class="btn btn-success submit-quiz" ng-disabled="isNumberEnough" ng-click="submitFn()">submit</button>
+			</div>
+		</div>
+	
+	</div>
+
+</div>

@@ -21,6 +21,7 @@ public class QuestionDao implements IQuestionDao {
 	public void saveQuestion(Question question) {
 		SqlSession sqlSession = sqlSessionFactory.openSession();
 		sqlSession.insert(Question.class.getName() + ".saveQuestion", question);
+		sqlSession.commit();
 		sqlSession.close();
 	}
 
@@ -32,6 +33,21 @@ public class QuestionDao implements IQuestionDao {
 		map.put("type", type);
 		List<Question> questions = sqlSession.selectList(Question.class.getName() + ".randFindQuestion", map);
 		sqlSession.close();
+		return questions;
+	}
+
+	@Override
+	public int findMaxID() {
+		SqlSession sqlSession = sqlSessionFactory.openSession();
+		Object maxID = sqlSession.selectOne(Question.class.getName() + ".findMaxID");
+		sqlSession.close();
+		return (int)maxID;
+	}
+
+	@Override
+	public List<Question> findSpec(List<Integer> questionIDs) {
+		SqlSession sqlSession = sqlSessionFactory.openSession();
+		List<Question> questions = sqlSession.selectList(Question.class.getName() + ".findSpec", questionIDs);
 		return questions;
 	}
 

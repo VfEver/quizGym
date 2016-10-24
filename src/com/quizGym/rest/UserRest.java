@@ -1,9 +1,14 @@
 package com.quizGym.rest;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.util.Date;
 
+import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
@@ -22,16 +27,12 @@ public class UserRest {
 	public void setUserService(IUserService userService) {
 		this.userService = userService;
 	}
-	@GET
-	@Path("/saveUser")
-	@Produces(MediaType.APPLICATION_JSON)
-	public String saveUser(@Context HttpServletRequest request) {
-		String username = request.getParameter("username");
-		String password = request.getParameter("password");
-		
-		return "hello";
-	}
 	
+	/**
+	 * 查询用户
+	 * @param request
+	 * @return
+	 */
 	@GET
 	@Path("/findUser")
 	@Produces(MediaType.TEXT_PLAIN)
@@ -40,23 +41,52 @@ public class UserRest {
 		return "hello";
 	}
 	
-	@GET
+	/**
+	 * 查看是否登录成功
+	 * @param request
+	 * @return
+	 * @throws Exception
+	 */
+	@POST
 	@Path("/loginSuccess")
 	@Produces(MediaType.TEXT_PLAIN)
-	public String login(@Context HttpServletRequest request) {
-		String username = request.getParameter("username");
-		String password = request.getParameter("password");
-		User user = new User();
-		user.setAcount(username);;
-		user.setPasswrod(password);
-		User returnUser = userService.findUser(user);
-		if (returnUser == null) {
-			return "-1";
-		}
-		return "200";
+	public String login(@Context HttpServletRequest request) throws Exception {
+		BufferedReader br = new BufferedReader(
+						new InputStreamReader(
+						(ServletInputStream) request.getInputStream()));  
+        String line = null;  
+        StringBuilder sb = new StringBuilder();  
+        while ((line = br.readLine()) != null) {  
+            sb.append(line);  
+        }
+        if (sb.length() != 0 || !(sb.toString().equals(""))) {
+        	
+        	String[] infos = sb.toString().split("&");
+        	
+        	String username = infos[0].split("=")[1];
+        	String password = infos[1].split("=")[1];
+        	
+        	User user = new User();
+        	user.setAcount(username);;
+        	user.setPasswrod(password);
+        	User returnUser = userService.findUser(user);
+        	if (returnUser == null) {
+        		return "-1";
+        	}
+        	
+        	//将username存入session
+        	HttpSession session = request.getSession();
+        	session.setAttribute("username", username);
+        	return "200";
+        }
+		return "-1";
 	}
 	
-	
+	/**
+	 * 注册
+	 * @param request
+	 * @return
+	 */
 	@GET
 	@Path("/signup")
 	@Produces(MediaType.TEXT_PLAIN)

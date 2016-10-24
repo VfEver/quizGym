@@ -35,9 +35,22 @@ create table uq_done_middle(
 	question_id int,
 	primary key(user_id,question_id)
 );
-####用户收藏题目中间表
-create table uq_collect_middle(
+####用户做过套题中间表
+create table ug_collect_middle(
 	user_id int,
-	question_id int,
-	primary key(user_id,question_id)
-)
+	group_id int,
+	right_num int default 0,
+	wrong_num int default 0	
+);
+###套题信息
+create table group_question(
+    group_id int auto_increment primary key not null,
+    group_name varchar(50) not null,
+    creater_name varchar(20) not null,
+    create_time date not null
+);
+###套题中的题目
+create table group_content(
+	group_id int not null,
+	question_id int not null
+);

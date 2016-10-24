@@ -7,4 +7,6 @@ import com.quizGym.entity.Question;
 public interface IQuestionService {
 	public void saveQuestion(Question question);
 	public List<Question> randFindQuestion(int num, String type);
+	public int findMaxID();
+	public List<Question> findSpec(List<Integer> questionIDs);
 }

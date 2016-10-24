@@ -7,10 +7,12 @@
 		<typeAlias type="com.quizGym.entity.Type" alias="type"/>
 		<typeAlias type="com.quizGym.entity.Question" alias="question"/>
 		<typeAlias type="com.quizGym.entity.User" alias="user"/>
+		<typeAlias type="com.quizGym.entity.GroupQuestion" alias="groupQuestion"/>
 	</typeAliases>
 	<mappers>
 		<mapper resource="com/quizGym/entity/questionMapper.xml"/>
 		<mapper resource="com/quizGym/entity/userMapper.xml"/>
 		<mapper resource="com/quizGym/entity/typeMapper.xml"/>
+		<mapper resource="com/quizGym/entity/groupQuestionMapper.xml"/>
 	</mappers>
 </configuration>

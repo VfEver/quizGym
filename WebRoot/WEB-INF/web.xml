@@ -20,6 +20,7 @@
 	</listener>
 	
 	<!-- 编码过滤器
+	 -->
 	<filter>
 		<filter-name>encodingFilter</filter-name>
 		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
@@ -28,7 +29,7 @@
 			<param-value>UTF-8</param-value>
 		</init-param>
 	</filter>
-	 -->
+	
 	<!-- 用户登录过滤器 
 	<filter>
 		<filter-name>loginFilter</filter-name>
@@ -49,18 +50,14 @@
     <servlet-name>loginServlet</servlet-name>
     <servlet-class>com.quizGym.servlet.LoginServlet</servlet-class>
   </servlet>
-
+ -->
 
 
 	<filter-mapping>
 		<filter-name>encodingFilter</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
- -->
-  <servlet>
-    <servlet-name>LoginServlet</servlet-name>
-    <servlet-class>com.quizGym.servlet.LoginServlet</servlet-class>
-  </servlet>
+
 	<servlet-mapping>
 		<servlet-name>Jersey REST Service</servlet-name>
 		<url-pattern>/rest/*</url-pattern>
@@ -71,8 +68,4 @@
     <url-pattern>/login</url-pattern>
   </servlet-mapping>
    -->
-  <servlet-mapping>
-    <servlet-name>LoginServlet</servlet-name>
-    <url-pattern>/LoginServlet</url-pattern>
-  </servlet-mapping>
 </web-app>

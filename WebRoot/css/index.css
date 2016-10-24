@@ -51,10 +51,36 @@ html, body {
 	transition: .5s all ease;
 	margin-right: 20px;
 }
+
 .nav-mind-dash-icon {
 	cursor: pointer;
 }
 
+.nav-login .search-box {
+	margin-top: 30px;
+}
+.nav-login .search-box input {
+	height: 40px;
+}
+.nav-login .search-button{
+	margin-left: -10px;
+	color: #fff;
+	margin-top: 30px;
+	font-size: 25px;
+	border: solid #fff;
+	border-radius: 5px;
+	height: 40px;
+	width: 40px;
+	text-align: center;
+	line-height: 35px;
+	cursor: pointer;
+	transition: all .4s ease;
+}
+.nav-login .search-button:hover {
+	background: #ccc;
+	color: #000;
+
+}
 /*main*/
 .ng-box-main {
 	height: 100%;
@@ -135,7 +161,7 @@ html, body {
 	font-size: 30px;
 	text-align: center;
 	cursor: pointer;
-	transition: .4s all cubic-bezier(0, 0, 0.4, 1);
+	transition: .4s all cubic-bezier(0, 0, 0.3, 1);
 	color: #444;
 }
 .quiz-main .quiz-item hr {
@@ -144,7 +170,7 @@ html, body {
 	border: 1.5px solid #999;
 }
 .quiz-main .quiz-item:hover {
-	transform: scale(1.2);
+	transform: scale(1.3);
 }
 .box-top {
 	justify-content: space-between;
@@ -240,8 +266,6 @@ html, body {
 	width: 150px;
 }
 
-
-
 /*footer*/
 .footer {
 	height: 150px;
@@ -251,3 +275,53 @@ html, body {
 }
 
 
+/*create-quiz-form*/
+.create-quiz-main .form-group {
+	height: 40px;
+}
+.create-quiz-main .add-question, .create-quiz-main .submit-quiz {
+	margin-top: 20px;
+	margin-right: 10px;
+}
+label {
+	height: 40px;
+	line-height: 30px;
+	/*text-align: right;*/
+}
+.question-option {
+	margin: 5px;
+}
+
+.buttons-divider {
+	margin-top: 80px;
+}
+
+.quiz-question-index {
+	margin-right: 5px;
+}
+/*.question-info {
+	display: none;
+}*/
+
+
+
+.quiz-list-item {
+	border: 1px solid #ccc;
+	border-bottom: 1px dashed #ccc;
+	border-radius: 5px;
+	margin: 10px;
+	font-size: 15px;
+	height: 60px;
+	pointer: cursor;
+	padding-left: 10px;
+	padding-top: 5px;
+	box-sizing: border-box;
+}
+
+.quiz-list-item:hover {
+	background: #ccc;
+}
+
+.quiz-time {
+	margin-right: 10px;
+}

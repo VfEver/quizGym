@@ -11,12 +11,15 @@
 		<result property="answerD" column="answerD"/>
 		<result property="rightAnswer" column="right_answer"/>
 		<result property="reason" column="reason"/>
+		<result property="typeID" column="type_id"/>
 	</resultMap>
+	
 	<!-- 插入题目 -->
 	<insert id="saveQuestion" parameterType="question">
 		insert into question(question_name,answerA,answerB,answerC,answerD,right_answer,reason,qt_id)
-		values(#{name},#{answerA},#{answerB},#{answerC},#{answerD},#{rightAnswer},#{reason},#{type.id},)
+		values(#{name},#{answerA},#{answerB},#{answerC},#{answerD},#{rightAnswer},#{reason},#{typeID})
 	</insert>
+	
 	<!-- 随机查找一定数量的题目 -->
 	<select id="randFindQuestion" parameterType="map" resultMap="questionMap">
 		select q.question_id, q.question_name, q.answerA,q.answerB, q.answerC, q.answerD, q.right_answer, q.reason
@@ -26,4 +29,20 @@
 		order by rand()
 		limit 0,5
 	</select>
+	
+	<!-- 查询当前最大的id -->
+	<select id="findMaxID" resultType="java.lang.Integer">
+		select max(question_id) from Question
+	</select>
+	
+	<!-- 根据一些列id查询题目 -->
+	<select id="findSpec" resultMap="questionMap">
+		select *
+		from question
+		where question_id in 
+		<foreach collection="list" item="question_id" index="index" open="(" close=")" separator=",">
+			#{question_id}
+		</foreach>
+	</select>
+	
 </mapper>

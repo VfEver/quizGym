@@ -91,7 +91,17 @@
       	<property name="userService" ref="userServiceID"></property>
       </bean>
       
-      
+      <!-- 配置groupquestion的bean -->
+      <bean id="groupQuestionDaoID" class="com.quizGym.dao.impl.GroupQuestionDao">
+      	<property name="sqlSessionFactory" ref="sqlSessionFactoryBeanID"></property>
+      </bean>
+      <bean id="groupQuestionServiceID" class="com.quizGym.service.impl.GroupQuestionService">
+      	<property name="groupQuestionDao" ref="groupQuestionDaoID"></property>
+      </bean>
+      <bean id="groupQuestionRestID" class="com.quizGym.rest.GroupQuestionRest">
+      	<property name="groupQuestionService" ref="groupQuestionServiceID"></property>
+      	<property name="questionService" ref="questionServiceID"></property>
+      </bean>
       
       
       

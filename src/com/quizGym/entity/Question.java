@@ -13,7 +13,7 @@ public class Question {
 	private String answerD;
 	private String rightAnswer;
 	private String reason;
-	private Type type;
+	private int typeID;
 	public int getId() {
 		return id;
 	}
@@ -62,11 +62,11 @@ public class Question {
 	public void setReason(String reason) {
 		this.reason = reason;
 	}
-	public Type getType() {
-		return type;
+	public int getTypeID() {
+		return typeID;
 	}
-	public void setType(Type type) {
-		this.type = type;
+	public void setTypeID(int typeID) {
+		this.typeID = typeID;
 	}
 	
 }

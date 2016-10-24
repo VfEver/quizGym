@@ -73,5 +73,11 @@ public class QuestionRest {
 		return result.toString();
 	}
 	
-	
+	//查出题目最大id
+	@GET
+	@Path("/findMax")
+	@Produces(MediaType.TEXT_PLAIN)
+	public String findMax(@Context HttpServletRequest request) {
+		return ""+questionService.findMaxID();
+	}
 }
