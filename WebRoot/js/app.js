@@ -10,10 +10,10 @@ angular.module('lApp', ['ui.router', 'controllersModule'])
 			url: '/index',
 			views: {
 				'navinfo': {
-					templateUrl: '/quizGym/tpls/nav-unlogin-tpl.html'
+					templateUrl: 'tpls/nav-unlogin-tpl.html'
 				},
 				'main': {
-					templateUrl: '/quizGym/tpls/welcome-main-tpl.html'
+					templateUrl: 'tpls/welcome-main-tpl.html'
 				}
 			}
 		})
@@ -21,13 +21,13 @@ angular.module('lApp', ['ui.router', 'controllersModule'])
 			url: '/userlogin',
 			views: {
 				'main': {
-					templateUrl: '/quizGym/tpls/login-main-tpl.html'
+					templateUrl: 'tpls/login-main-tpl.html'
 				},
 				'navinfo': {
-					templateUrl: '/quizGym/tpls/nav-unlogin-tpl.html'
+					templateUrl: 'tpls/nav-unlogin-tpl.html'
 				},
 				'footer': {
-					templateUrl: '/quizGym/tpls/footer-tpl.html'
+					templateUrl: 'tpls/footer-tpl.html'
 				}
 			}
 		})
@@ -35,13 +35,13 @@ angular.module('lApp', ['ui.router', 'controllersModule'])
 			url: '/usersignup',
 			views: {
 				'main': {
-					templateUrl: '/quizGym/tpls/sign-up-main-tpl.html'
+					templateUrl: 'tpls/sign-up-main-tpl.html'
 				},
 				'navinfo': {
-					templateUrl: '/quizGym/tpls/nav-unlogin-tpl.html'
+					templateUrl: 'tpls/nav-unlogin-tpl.html'
 				},
 				'footer': {
-					templateUrl: '/quizGym/tpls/footer-tpl.html'
+					templateUrl: 'tpls/footer-tpl.html'
 				}	
 			}
 		})
@@ -49,13 +49,13 @@ angular.module('lApp', ['ui.router', 'controllersModule'])
 			url: '/quizmain',
 			views: {
 				'main': {
-					templateUrl: '/quizGym/tpls/quiz-main-tpl.html'
+					templateUrl: 'tpls/quiz-main-tpl.html'
 				},
 				'navinfo': {
-					templateUrl: '/quizGym/tpls/nav-login-tpl.html'
+					templateUrl: 'tpls/nav-login-tpl.html'
 				},
 				'footer': {
-					templateUrl: '/quizGym/tpls/footer-tpl.html'
+					templateUrl: 'tpls/footer-tpl.html'
 				}
 			}
 		})
@@ -63,13 +63,13 @@ angular.module('lApp', ['ui.router', 'controllersModule'])
 			url: '/doquiz',
 			views: {
 				'main': {
-					templateUrl: '/quizGym/tpls/do-quiz-main-tpl.html'
+					templateUrl: 'tpls/do-quiz-main-tpl.html'
 				},
 				'navinfo': {
-					templateUrl: '/quizGym/tpls/nav-login-tpl.html'
+					templateUrl: 'tpls/nav-login-tpl.html'
 				},
 				'footer': {
-					templateUrl: '/quizGym/tpls/footer-tpl.html'
+					templateUrl: 'tpls/footer-tpl.html'
 				}
 			}
 		})
@@ -77,13 +77,13 @@ angular.module('lApp', ['ui.router', 'controllersModule'])
 			url: '/createquiz',
 			views: {
 				'main': {
-					templateUrl: '/quizGym/tpls/create-quiz-main-tpl.html'
+					templateUrl: 'tpls/create-quiz-main-tpl.html'
 				},
 				'navinfo': {
-					templateUrl: '/quizGym/tpls/nav-login-tpl.html'
+					templateUrl: 'tpls/nav-login-tpl.html'
 				},
 				'footer': {
-					templateUrl: '/quizGym/tpls/footer-tpl.html'
+					templateUrl: 'tpls/footer-tpl.html'
 				}
 			}
 		})
@@ -91,13 +91,27 @@ angular.module('lApp', ['ui.router', 'controllersModule'])
 			url: '/quizlistview',
 			views: {
 				'main': {
-					templateUrl: '/quizGym/tpls/quiz-list-view-main-tpl.html'
+					templateUrl: 'tpls/quiz-list-view-main-tpl.html'
 				},
 				'navinfo': {
-					templateUrl: '/quizGym/tpls/nav-login-tpl.html'
+					templateUrl: 'tpls/nav-login-tpl.html'
 				},
 				'footer': {
-					templateUrl: '/quizGym/tpls/footer-tpl.html'
+					templateUrl: 'tpls/footer-tpl.html'
+				}
+			}
+		})
+		.state('searchlist', {
+			url: '/searchlist',
+			views: {
+				'main': {
+					templateUrl: 'tpls/quiz-list-search-main-tpl.html'
+				},
+				'navinfo': {
+					templateUrl: 'tpls/nav-login-tpl.html'
+				},
+				'footer': {
+					templateUrl: 'tpls/footer-tpl.html'
 				}
 			}
 		})

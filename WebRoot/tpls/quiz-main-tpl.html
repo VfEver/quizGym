@@ -31,4 +31,43 @@
 		</div>
 		<button class="btn btn-lg btn-danger random-quiz" ng-click="getRandom()">Random Quiz</button>
 	</div>
+
+	<div class="modal fade" id="randomQuizModal">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+	        <h4 class="modal-title">random option</h4>
+	      </div>
+	      <div class="modal-body">
+	        <p>choose the number of questions:</p>
+				<!-- <input type="radio" name="numberOfQuiz" class="form-control" value="5">5    	
+				<input type="radio" name="numberOfQuiz" class="form-control" value="5">
+				<input type="radio" name="numberOfQuiz" class="form-control" value="5">
+				<input type="radio" name="numberOfQuiz" class="form-control" value="5"> -->
+				<div class="btn-group" data-toggle="buttons">
+				  <label class="btn btn-success active">
+				    <input type="radio" name="options" value="5" autocomplete="off" checked class="numberRadio"> 5
+				  </label>
+				  <label class="btn btn-success">
+				    <input type="radio" name="options" value="10" autocomplete="off" class="numberRadio"> 10
+				  </label>
+				  <label class="btn btn-success">
+				    <input type="radio" name="options" value="15" autocomplete="off" class="numberRadio"> 15
+				  </label>
+				  <label class="btn btn-success">
+				    <input type="radio" name="options" value="20" autocomplete="off" class="numberRadio"> 20
+				  </label>
+				</div>
+	        <br />
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn" data-dismiss="modal">Close</button>
+	        <button type="button" class="btn btn-success" ng-click="getRandomQuizFn()">start</button>
+	      </div>
+	    </div><!-- /.modal-content -->
+	  </div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
 </div>

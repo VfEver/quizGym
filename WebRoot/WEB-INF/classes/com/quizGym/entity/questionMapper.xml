@@ -27,7 +27,7 @@
 		on q.qt_id = t.types_id
 		and t.types_name = #{type}
 		order by rand()
-		limit 0,5
+		limit 0,#{num}
 	</select>
 	
 	<!-- 查询当前最大的id -->
@@ -44,5 +44,7 @@
 			#{question_id}
 		</foreach>
 	</select>
+	
+	<!--  -->
 	
 </mapper>

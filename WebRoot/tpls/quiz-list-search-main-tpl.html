@@ -1,0 +1,18 @@
+<div class="quiz-list-search-main" ng-controller="SearchResultController">
+	<div class="container">
+		<h4>Result of searching ' {{searchResultKey}} ':</h4>
+		<hr />
+		<div ng-show="searchResultList.length === 0">
+			<h3>There is no result of ' {{searchResultKey}} '</h3>
+		</div>
+		<div ng-repeat="item in searchResultList" class="quiz-list-item" ng-click="jumpToQuizFn(item.id, item.listName, item.scopeType)">
+			<p class="quiz-name"><span class="glyphicon glyphicon-tower"></span> {{item.listName.length > 90 ? item.listName.substr(0, 90) + '...' : item.listName}}<span class="quiz-scope pull-right">
+			<span class="glyphicon glyphicon-tags"></span>&nbsp;{{item.scopeType}}</span></p>
+			<p class="quiz-creator"><span class="glyphicon glyphicon-user"></span> {{item.createrName}}<span class="quiz-time pull-right"><span class="glyphicon glyphicon-hourglass"></span><i> {{item.createTime}}</i></span></p>
+		</div>
+		<hr />
+		<button class="btn btn-success" ng-click="backFn()">Back</button>
+	</div>
+	
+	
+</div>

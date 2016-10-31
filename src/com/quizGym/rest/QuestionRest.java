@@ -22,6 +22,7 @@ import com.quizGym.service.IQuestionService;
  */
 @Path("/questionrest")
 public class QuestionRest {
+	
 	private IQuestionService questionService;
 	public void setQuestionService(IQuestionService questionService) {
 		this.questionService = questionService;
@@ -51,13 +52,15 @@ public class QuestionRest {
 	public String randFindQuestion(@Context HttpServletRequest request) {
 		
 		String type = request.getParameter("scopeType");
+		String num = request.getParameter("quizNumber");
 		
-		List<Question> questions = questionService.randFindQuestion(5, type);
+		List<Question> questions = questionService.randFindQuestion(Integer.parseInt(num), type);
 		JSONArray result = new JSONArray();
 		int index = 1;
 		for (Question question : questions) {
 			JSONObject json = new JSONObject();
 			json.put("index", index);
+			json.put("questionID", question.getId());
 			json.put("question", question.getName());
 			String[] ans = new String[4];
 			ans[0]="A、" + question.getAnswerA();

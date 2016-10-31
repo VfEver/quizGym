@@ -1,7 +1,7 @@
-<div class="nav-login">
-	<span class="glyphicon glyphicon-search search-button pull-right"></span>
+<div class="nav-login" ng-controller="SearchBoxController">
+	<span class="glyphicon glyphicon-search search-button pull-right" ng-click="getSearchFn()"></span>
  	<div class="search-box col-md-3 pull-right">
- 		<input type="text" placeholder="search" class="form-control">
+ 		<input type="text" placeholder="search" class="form-control" ng-model="keyOfSearch" ng-keydown="keyDownGetSearch($event)">
  	</div>
 
 </div>

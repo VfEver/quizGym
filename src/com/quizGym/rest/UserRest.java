@@ -14,6 +14,10 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+
+import com.quizGym.dao.impl.UserDao;
 import com.quizGym.entity.User;
 import com.quizGym.service.IUserService;
 /**
@@ -49,7 +53,7 @@ public class UserRest {
 	 */
 	@POST
 	@Path("/loginSuccess")
-	@Produces(MediaType.TEXT_PLAIN)
+	@Produces(MediaType.APPLICATION_JSON)
 	public String login(@Context HttpServletRequest request) throws Exception {
 		BufferedReader br = new BufferedReader(
 						new InputStreamReader(
@@ -77,7 +81,10 @@ public class UserRest {
         	//将username存入session
         	HttpSession session = request.getSession();
         	session.setAttribute("username", username);
-        	return "200";
+        	JSONObject json = new JSONObject();
+        	json.put("username", returnUser.getName());
+        	json.put("userid", returnUser.getId());
+        	return json.toString();
         }
 		return "-1";
 	}
@@ -91,6 +98,7 @@ public class UserRest {
 	@Path("/signup")
 	@Produces(MediaType.TEXT_PLAIN)
 	public String register(@Context HttpServletRequest request) {
+		
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
 		String mailBox = request.getParameter("email");
@@ -101,6 +109,60 @@ public class UserRest {
 		user.setPasswrod(password);
 		user.setAcount(username);
 		userService.saveUser(user);
+		User returnUser = userService.findUser(user);
+		
+		JSONObject json = new JSONObject();
+    	json.put("username", returnUser.getName());
+    	json.put("userid", returnUser.getId());
+    	return json.toString();
+	}
+	
+	/**
+	 * 用户做完套题后，存贮做过的套题信息
+	 * @param request
+	 * @return
+	 */
+	@GET
+	@Path("/savedonelist")
+	@Produces(MediaType.TEXT_PLAIN)
+	public String saveDoneList (@Context HttpServletRequest request) {
+		
+		String userID = request.getParameter("user_id");
+		String groupID = request.getParameter("quiz_id");
+		String right = request.getParameter("correct_num");
+		String wrong = request.getParameter("worng_num");
+		Date time = new Date();
+		userService.saveDoneList(Integer.parseInt(userID), 
+								Integer.parseInt(groupID), 
+								Integer.parseInt(right), 
+								Integer.parseInt(wrong), time);
+		return "200";
+	}
+	
+	@POST
+	@Path("/savedonequestion")
+	@Produces(MediaType.TEXT_PLAIN)
+	public String saveDoneQuestion (@Context HttpServletRequest request) throws Exception {
+		
+		BufferedReader br = new BufferedReader(new InputStreamReader(
+				(ServletInputStream) request.getInputStream()));
+		String line = null;
+		StringBuilder sb = new StringBuilder();
+		while ((line = br.readLine()) != null) {
+			sb.append(line);
+		}
+		JSONObject json = JSONObject.fromObject(sb.toString());
+		int userID = Integer.parseInt(json.getString("user_id"));
+		
+		JSONArray array = JSONArray.fromObject(json.get("questionInfo"));
+		int len = array.size();
+		for (int i = 0; i != len; ++i) {
+			JSONObject o = array.getJSONObject(i);
+			int questionID = Integer.parseInt(o.getString("questionId"));
+			int status = Integer.parseInt(o.getString("result"));
+			userService.saveDoneQuestion(userID, questionID, status);
+		}
+		
 		return "200";
 	}
 }

@@ -13,16 +13,28 @@
 		<result property="type" column="user_type"/>
 	</resultMap>
 	
+	<!-- 保存注册用户 -->
 	<insert id="saveUser" parameterType="user">
 		insert into user(user_account,user_password,user_name,user_mailbox,createTime)
-		values (#{account},#{password},#{name},#{mailBox},#{createTime})
+		values (#{account},#{password},#{name},#{mailBox},#{createTime});
 	</insert>
 	
+	<!-- 查询用户 -->
 	<select id="findUser" parameterType="user" resultMap="userMap">
 		select *
 		from user
 		where user_account = #{account} and user_password = #{password}
 	</select>
 	
+	<!-- 保存用户做过的题目单信息 -->
+	<insert id="saveDoneList" parameterType="map">
+		insert into ug_collect_middle (user_id, group_id, right_num, wrong_num, done_time)
+		values (#{userID},#{groupID},#{right},#{wrong},#{time});
+	</insert>
 	
+	<!-- 保存用户做过题目信息 -->
+	<insert id="saveDoneQuestion" parameterType="map">
+		insert into uq_done_middle(user_id, question_id, status)
+		values (#{userID}, #{questionID}, #{status});
+	</insert>
 </mapper>

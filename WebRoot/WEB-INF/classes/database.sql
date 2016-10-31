@@ -33,6 +33,7 @@ create table question(
 create table uq_done_middle(
 	user_id int,
 	question_id int,
+	status int,
 	primary key(user_id,question_id)
 );
 ####用户做过套题中间表

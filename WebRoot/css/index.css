@@ -4,11 +4,16 @@
 }
 body {
 	font-family: Verdana;
-	overflow: hidden;
+	/*overflow: hidden;*/
 }
 html, body {
 	width: 100%;
 	height: 100%;
+}
+body {
+	display: flex;
+  	min-height: 100vh;
+  	flex-direction: column;
 }
 .top-nav {
 	background: #000;
@@ -83,13 +88,18 @@ html, body {
 }
 /*main*/
 .ng-box-main {
-	height: 100%;
+	overflow: scroll;
+	height: 70%;
+	flex: 1;
+	min-height: 600px;
+	padding-bottom: 50px;
+
 }
 .welcome-main{
 	background: #000;
 	color: #fff;
 	text-align: center;
-	height: 100%;
+	height: 150%;
 }
 
 .welcome-main h1 {
@@ -195,18 +205,19 @@ html, body {
 
 /*do-quiz-main*/
 .do-quiz-main {
-	height: 100%;
+	height: 120%;
 	background: -webkit-linear-gradient(rgb(135,132,131), rgb(35,32,31));
 	background: -o-linear-gradient(rgb(135,132,131), rgb(35,32,31));
 	background: linear-gradient(rgb(135,132,131), rgb(35,32,31));
     font-family: arial;
+    /*border: solid #fff;*/
 }
 
 .do-quiz-main .container {
 	background: #fff;
 	width: 800px;
 	border-radius: 0 0 10px 10px;
-	box-shadow: 5px 5px 15px #000;
+	box-shadow:0 5px 50px 10px #333;
 	padding-top: 20px;
 }
 .do-quiz-main .container h2 {
@@ -271,7 +282,7 @@ html, body {
 	height: 150px;
 	background: #000;
 	color: #999;
-	margin-top: -245px;
+	/*margin-top: -245px;*/
 }
 
 
@@ -302,26 +313,37 @@ label {
 /*.question-info {
 	display: none;
 }*/
-
+.question-options div{
+	margin-left: -5px;
+}
 
 
 .quiz-list-item {
-	border: 1px solid #ccc;
-	border-bottom: 1px dashed #ccc;
+	/*border: 1px solid #ccc;*/
+	border-top: 1px dashed #ccc;
 	border-radius: 5px;
-	margin: 10px;
-	font-size: 15px;
-	height: 60px;
+	/*margin: 10px;*/
+	font-size: 17px;
+	height: 100px;
 	pointer: cursor;
 	padding-left: 10px;
 	padding-top: 5px;
 	box-sizing: border-box;
+	cursor: pointer;
+	transition: all .2s ease;
 }
-
+.quiz-list-item .quiz-creator {
+	margin-top: 30px;
+}
 .quiz-list-item:hover {
-	background: #ccc;
+	/*box-shadow: 0 1px 5px 2px #333;*/
+	/*background: rgb(240,240,240);*/
+	/*background: rgba(226,36,40,1);*/
+	background: #ea3f49;
 }
-
-.quiz-time {
+.quiz-list-item:hover p {
+	color: #fff;
+}
+.quiz-time, .quiz-scope {
 	margin-right: 10px;
 }

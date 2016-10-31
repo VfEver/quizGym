@@ -136,6 +136,7 @@ public class GroupQuestionRest {
 			json.put("id", groupQuestion.getId());
 			json.put("listName", groupQuestion.getName());
 			json.put("createrName", groupQuestion.getCreaterName());
+			json.put("scopeType", typeName);
 			Date date = groupQuestion.getCreateTime();
 			SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-dd");
 			String createTime = sdf.format(date);
@@ -156,7 +157,7 @@ public class GroupQuestionRest {
 	@Produces(MediaType.APPLICATION_JSON)
 	public String findQuestion(@Context HttpServletRequest request) {
 		
-		String groupID = request.getParameter("id");
+		String groupID = request.getParameter("questionId");
 		int typeID = Integer.parseInt(groupID);
 		List<Integer> questionIDs = groupQuestionService.findQuestions(typeID);
 		List<Question> questions = questionService.findSpec(questionIDs);
@@ -194,6 +195,8 @@ public class GroupQuestionRest {
 			json.put("id", groupQuestion.getId());
 			json.put("listName", groupQuestion.getName());
 			json.put("createrName", groupQuestion.getCreaterName());
+			String typeName = TypeUtils.getTypeName(groupQuestion.getTypeID());
+			json.put("scopeType", typeName);
 			Date date = groupQuestion.getCreateTime();
 			SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-dd");
 			String createTime = sdf.format(date);
