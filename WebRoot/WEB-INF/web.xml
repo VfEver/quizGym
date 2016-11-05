@@ -19,8 +19,7 @@
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
 	
-	<!-- 编码过滤器
-	 -->
+	<!-- 编码过滤器 -->
 	<filter>
 		<filter-name>encodingFilter</filter-name>
 		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
@@ -30,12 +29,13 @@
 		</init-param>
 	</filter>
 	
-	<!-- 用户登录过滤器 
+	<!-- 用户登录过滤器 -->
 	<filter>
 		<filter-name>loginFilter</filter-name>
 		<filter-class>com.quizGym.servlet.LoginFilter</filter-class>
 	</filter>
-	-->
+	
+	<!-- jersey服务 -->
 	<servlet>
 		<servlet-name>Jersey REST Service</servlet-name>
 		<servlet-class>com.sun.jersey.spi.spring.container.servlet.SpringServlet</servlet-class>
@@ -45,27 +45,14 @@
 		</init-param>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
-  <!-- 
-  <servlet>
-    <servlet-name>loginServlet</servlet-name>
-    <servlet-class>com.quizGym.servlet.LoginServlet</servlet-class>
-  </servlet>
- -->
-
 
 	<filter-mapping>
 		<filter-name>encodingFilter</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
-
+	
 	<servlet-mapping>
 		<servlet-name>Jersey REST Service</servlet-name>
 		<url-pattern>/rest/*</url-pattern>
 	</servlet-mapping>
-	<!-- 
-  <servlet-mapping>
-    <servlet-name>loginServlet</servlet-name>
-    <url-pattern>/login</url-pattern>
-  </servlet-mapping>
-   -->
 </web-app>

@@ -18,6 +18,22 @@ public class User {
 	private Date createTime;//用户创建账户时间
 	private int score = 0;//用户答题分数，总分
 	private int type = 0;//用户类型，0为普通用户，1为普通管理员
+	private String headImage;
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
+	}
+	public String getHeadImage() {
+		return headImage;
+	}
+	public void setHeadImage(String headImage) {
+		this.headImage = headImage;
+	}
+	public void setAccount(String account) {
+		this.account = account;
+	}
 	private List<Integer> done = new ArrayList<>();
 	private List<Integer> collect = new ArrayList<>();
 	public int getId() {

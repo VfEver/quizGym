@@ -1,6 +1,7 @@
 package com.quizGym.service.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import com.quizGym.dao.IGroupQuestionDao;
 import com.quizGym.entity.GroupQuestion;
@@ -53,6 +54,30 @@ public class GroupQuestionService implements IGroupQuestionService {
 	public List<GroupQuestion> findKeyList(String key) {
 		
 		return groupQuestionDao.findKeyList(key);
+	}
+
+	@Override
+	public List<GroupQuestion> findCheckList() {
+		
+		return groupQuestionDao.findCheckList();
+	}
+
+	@Override
+	public Map<String, String> findDoneInfo(int userID, int typeID) {
+
+		return groupQuestionDao.findDoneInfo(userID, typeID);
+	}
+
+	@Override
+	public List<Map<String, Integer>> findDoneRecent(int userID) {
+
+		return groupQuestionDao.findDoneRecent(userID);
+	}
+
+	@Override
+	public List<Map<String, Integer>> findRandomQuestions(int userID) {
+
+		return groupQuestionDao.findRandomQuestions(userID);
 	}
 
 }

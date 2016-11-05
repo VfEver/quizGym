@@ -38,7 +38,7 @@
 	<select id="findSpecList" parameterType="int" resultMap="groupQuestionMap">
 		select *
 		from group_question
-		where type_id=#{id}
+		where type_id=#{id} and status=1;
 	</select>
 	
 	<!-- 查询套题内的所有题目 -->
@@ -54,4 +54,47 @@
 		from group_question
 		where  group_name like #{name}
 	</select>
+	
+	<!-- 查询需要审核的题目单 -->
+	<select id="findCheckList" resultMap="groupQuestionMap">
+		select *
+		from group_question
+		where status = 0;
+	</select>
+	
+	<!-- 查询某个用户做过的某种类型所有题目的正确错误个数 -->
+	<select id="findDoneInfo" parameterType="map" resultType="java.util.HashMap">
+		select count(u.wrong_num) as w, count(u.right_num) as r
+		from group_question g inner join ug_collect_middle u
+		on g.group_id=u.group_id
+		where g.type_id=#{typeID} and u.user_id = #{userID}
+	</select>
+	
+	<!-- 查询用户最近10次? -->
+	<select id="findDoneRecent" resultType="java.util.HashMap">
+		select u.wrong_num as w, 
+				u.right_num as r,
+				u.user_id as userID,
+				u.group_id as groupID,
+				u.done_time as time
+		from ug_collect_middle u
+		where u.user_id = #{id}
+		order by u.done_time
+		<!-- limit 0,10 -->
+	</select>
+	
+	<!-- 查询随机生成的套题信息 -->
+	<select id="findRandomQuestions" parameterType="int" resultType="java.util.HashMap">
+		select u.user_id as userID,
+			   u.random_id as randomID,
+			   u.done_time as time,
+			   u.right_num as r,
+			   u.wrong_num as w
+		from ur_middle u
+		where user_id = #{id};
+	</select>
+	
+	
+	
+	
 </mapper>

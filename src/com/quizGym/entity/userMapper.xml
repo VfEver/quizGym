@@ -11,6 +11,7 @@
 		<result property="createTime" column="createTime"/>
 		<result property="score" column="user_score"/>
 		<result property="type" column="user_type"/>
+		<result property="headImage" column="head_image"/>
 	</resultMap>
 	
 	<!-- 保存注册用户 -->
@@ -34,7 +35,55 @@
 	
 	<!-- 保存用户做过题目信息 -->
 	<insert id="saveDoneQuestion" parameterType="map">
-		insert into uq_done_middle(user_id, question_id, status)
-		values (#{userID}, #{questionID}, #{status});
+		insert into uq_done_middle(user_id, question_id, status, done_time)
+		values (#{userID}, #{questionID}, #{status}, #{time});
 	</insert>
+	
+	<!-- 查询用户名或者账号（account）为待注册的用户是否存在 -->
+	<select id="findAccount" parameterType="string" resultMap="userMap">
+		select * 
+		from user
+		where user_account=#{name}
+	</select>
+	
+	<!-- 查询用户的权限 -->
+	<select id="findPower" parameterType="string" resultType="int">
+		select user_type
+		from user
+		where user_name=#{name}
+	</select>
+	
+	<!-- 查询所有用户 -->
+	<select id="findAllUser" resultMap="userMap">
+		select * from user
+	</select>
+	
+	<!-- 更新用户类型 -->
+	<update id="updateType" parameterType="map">
+		update user 
+		set user_type = #{type} 
+		where user_id = #{id}
+	</update>
+	
+	<!-- 更新分数 -->
+	<update id="updateScore" parameterType="map">
+		update user
+		set user_score = user_score + #{score}
+		where user_id =  #{id}
+	</update>
+	
+	<!-- 根据ID查询用户基本信息 -->
+	<select id="findUserByID" parameterType="int" resultMap="userMap">
+		select *
+		from user
+		where user_id=#{id}
+	</select>
+	
+	<!-- 根据userID更新用户头像 -->
+	<update id="updateUserHeadImage" parameterType="map">
+		update user
+		set head_image = #{head}
+		where user_id=#{id};
+	</update>
+	
 </mapper>

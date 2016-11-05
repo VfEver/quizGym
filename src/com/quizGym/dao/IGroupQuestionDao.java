@@ -1,6 +1,7 @@
 package com.quizGym.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import com.quizGym.entity.GroupQuestion;
 
@@ -58,4 +59,32 @@ public interface IGroupQuestionDao {
 	 * @return
 	 */
 //	public List<GroupQuestion> fuzzyMatching(String key);
+	
+	/**
+	 * 查询需要审核的题目单列表
+	 * @return
+	 */
+	public List<GroupQuestion> findCheckList();
+	
+	/**
+	 * 查询用户做过的题目正确错误
+	 * @param userID
+	 * @param typeID
+	 * @return
+	 */
+	public Map<String, String> findDoneInfo(int userID, int typeID);
+	
+	/**
+	 * 根据用户ID查询最近做过的信息
+	 * @param userID
+	 * @return
+	 */
+	public List<Map<String, Integer>> findDoneRecent(int userID);
+	
+	/**
+	 * 查询随机生成的套题信息
+	 * @param userID
+	 * @return
+	 */
+	public List<Map<String, Integer>> findRandomQuestions(int userID);
 }

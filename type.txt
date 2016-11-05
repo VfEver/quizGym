@@ -1,5 +1,10 @@
+---题目类别---
 Photography
 Music
 Science
 Sports
 Film
+---用户权限---
+0，表示只是普通用户（normal user）
+1，表示拥有出题权限（prouser）
+2，表示是管理员权限（admin）

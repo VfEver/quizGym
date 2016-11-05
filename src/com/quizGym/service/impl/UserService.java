@@ -1,8 +1,10 @@
 package com.quizGym.service.impl;
 
 import java.util.Date;
+import java.util.List;
 
 import com.quizGym.dao.IUserDao;
+import com.quizGym.entity.MailBox;
 import com.quizGym.entity.User;
 import com.quizGym.service.IUserService;
 
@@ -14,6 +16,7 @@ public class UserService implements IUserService {
 	
 	@Override
 	public void saveUser(User user) {
+		
 		userDao.saveUser(user);
 	}
 
@@ -31,9 +34,57 @@ public class UserService implements IUserService {
 	}
 
 	@Override
-	public void saveDoneQuestion(int userID, int questionID, int status) {
+	public void saveDoneQuestion(int userID, int questionID, int status, Date time) {
 		
-		userDao.saveDoneQuestion(userID, questionID, status);
+		userDao.saveDoneQuestion(userID, questionID, status, time);
+	}
+
+	@Override
+	public User findAccount(String account) {
+
+		return userDao.findAccount(account);
+	}
+
+	@Override
+	public int findPower(String username) {
+		
+		return userDao.findPower(username);
+	}
+
+	@Override
+	public List<User> findAllUser() {
+
+		return userDao.findAllUser();
+	}
+
+	@Override
+	public void updateScore(int userID, int score) {
+		
+		userDao.updateScore(userID, score);
+	}
+
+	@Override
+	public void updateType(int userID, int type) {
+
+		userDao.updateType(userID, type);
+	}
+
+	@Override
+	public List<MailBox> findInfo() {
+
+		return userDao.findInfo();
+	}
+
+	@Override
+	public User findUserByID(int id) {
+
+		return userDao.findUserByID(id);
+	}
+
+	@Override
+	public void updateUserHeadImage(String userID, String imagePath) {
+		
+		userDao.updateUserHeadImage(userID, imagePath);
 	}
 
 }

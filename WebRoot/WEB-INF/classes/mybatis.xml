@@ -8,11 +8,15 @@
 		<typeAlias type="com.quizGym.entity.Question" alias="question"/>
 		<typeAlias type="com.quizGym.entity.User" alias="user"/>
 		<typeAlias type="com.quizGym.entity.GroupQuestion" alias="groupQuestion"/>
+		<typeAlias type="com.quizGym.entity.MailBox" alias="mailBox"/>
+		<typeAlias type="com.quizGym.entity.RandomQuestion" alias="randomQuestion"/>
 	</typeAliases>
 	<mappers>
 		<mapper resource="com/quizGym/entity/questionMapper.xml"/>
 		<mapper resource="com/quizGym/entity/userMapper.xml"/>
 		<mapper resource="com/quizGym/entity/typeMapper.xml"/>
 		<mapper resource="com/quizGym/entity/groupQuestionMapper.xml"/>
+		<mapper resource="com/quizGym/entity/mailBoxMapper.xml"/>
+		<mapper resource="com/quizGym/entity/randomQuestionMapper.xml"/>
 	</mappers>
 </configuration>

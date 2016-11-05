@@ -181,6 +181,11 @@ public class GroupQuestionRest {
 		return result.toString();
 	}
 	
+	/**
+	 * 模糊匹配
+	 * @param request
+	 * @return
+	 */
 	@GET
 	@Path("/findKeyList")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -206,4 +211,31 @@ public class GroupQuestionRest {
 		
 		return arrays.toString();
 	}
+	
+	/**
+	 * 查询需要审核的题目单
+	 * @param request
+	 * @return
+	 */
+	@GET
+	@Path("/findchecklist")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String findCheckList(@Context HttpServletRequest request) {
+		JSONArray result = new JSONArray();
+		List<GroupQuestion> groups = groupQuestionService.findCheckList();
+		for (GroupQuestion groupQuestion : groups) {
+			JSONObject json = new JSONObject();
+			json.put("id", groupQuestion.getId());
+			json.put("listName", groupQuestion.getName());
+			json.put("createrName", groupQuestion.getCreaterName());
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM--dd");
+			String time = sdf.format(groupQuestion.getCreateTime());
+			json.put("createTime", time);
+			int typeID = groupQuestion.getTypeID();
+			json.put("scope", TypeUtils.getTypeName(typeID));
+			result.add(json);
+		}
+		return result.toString();
+	}
+	
 }

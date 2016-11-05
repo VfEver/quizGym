@@ -60,7 +60,7 @@ public class QuestionRest {
 		for (Question question : questions) {
 			JSONObject json = new JSONObject();
 			json.put("index", index);
-			json.put("questionID", question.getId());
+			json.put("questionId", question.getId());
 			json.put("question", question.getName());
 			String[] ans = new String[4];
 			ans[0]="A、" + question.getAnswerA();
@@ -82,5 +82,38 @@ public class QuestionRest {
 	@Produces(MediaType.TEXT_PLAIN)
 	public String findMax(@Context HttpServletRequest request) {
 		return ""+questionService.findMaxID();
+	}
+	
+	/**
+	 * 查询所有题目
+	 * @param request
+	 * @return
+	 */
+	@GET
+	@Path("/findallquestion")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String findAllQuestion(@Context HttpServletRequest request) {
+		
+		JSONArray result = new JSONArray();
+		List<Question> questions = questionService.findAllQuestion();
+		int index = 1;
+		for (Question question : questions) {
+			JSONObject json = new JSONObject();
+			json.put("index", index);
+			json.put("questionID", question.getId());
+			json.put("question", question.getName());
+			String[] ans = new String[4];
+			ans[0]="A、" + question.getAnswerA();
+			ans[1]="B、" + question.getAnswerB();
+			ans[2]="C、" + question.getAnswerC();
+			ans[3]="D、" + question.getAnswerD();
+			json.put("answer", ans);
+			json.put("result", question.getRightAnswer());
+			json.put("reason", question.getReason());
+			++index;
+			result.add(json);
+		}
+		
+		return result.toString();
 	}
 }

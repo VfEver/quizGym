@@ -24,25 +24,26 @@ public class LoginFilter extends HttpServlet implements Filter {
 		HttpServletRequest request = (HttpServletRequest) req;
 		HttpServletResponse response = (HttpServletResponse) resp;
 		HttpSession session = request.getSession(false);
-		String url = request.getRequestURI();
-		
+		String url = request.getRequestURL().toString();
+		System.out.println(url);
+		System.out.println(request.getQueryString());
 		if (url.contains("login") || url.contains("logout")) {
 			chain.doFilter(request, response);
 			return ;
 		}
 		
+		String path = "#/userlogin";
 		if (session != null) {
 			String username = (String)session.getAttribute("username");
 			if (username == null) {
-				request.getRequestDispatcher("/userlogin").forward(request, response);
+				request.getRequestDispatcher(path).forward(request, response);
 			} else {
 				chain.doFilter(request, response);
 			}
 		} else {
-			request.getRequestDispatcher("/userlogin").forward(request, response);
+			request.getRequestDispatcher(path).forward(request, response);
 		}
 		
-		return ;
 	}
 
 	@Override

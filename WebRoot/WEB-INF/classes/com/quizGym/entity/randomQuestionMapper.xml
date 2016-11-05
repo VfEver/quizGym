@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+	<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.quizGym.entity.RandomQuestion">
+	<resultMap type="randomQuestion" id="randomQuestionMap">
+		<result property="randomID" column="random_id" />
+		<result property="questionID" column="question_id"/>
+	</resultMap>
+	
+	
+	<!-- 查询随机题目最大id值 -->
+	<select id="findMaxRandomID" resultType="java.lang.Integer">
+		select max(random_id) from uq_random_middle
+	</select>
+	
+	<!-- 往随机表中插入随机题目组成的套题信息 -->
+	<insert id="saveRandom" parameterType="list">
+		insert into uq_random_middle(random_id, question_id)
+		values
+		<foreach collection="list" index="index" item="item" separator="," >
+			(#{item.randomID}, #{item.questionID})
+		</foreach>
+	</insert>
+	
+	<!-- 查询领域的随机题目个数 -->
+	<select id="selectRandomNum" parameterType="int"  resultType="java.util.HashMap">
+		select q.qt_id as id, count(*) as num
+		from uq_done_middle u left join question q
+		on u.question_id = q.question_id
+		where u.user_id = #{id}
+		group by(q.qt_id)
+	</select>
+	
+	<!-- 存储用户随机做过的题目组成的套题信息 -->
+	<insert id="saveRandomInfo" parameterType="map">
+		insert into ur_middle
+		values(#{userID},#{randomID},#{doneTime},#{rightNum},#{wrongNum});
+	</insert>
+</mapper>

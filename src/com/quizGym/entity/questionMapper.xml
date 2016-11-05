@@ -45,6 +45,20 @@
 		</foreach>
 	</select>
 	
-	<!--  -->
+	<!-- 查询所有题目 -->
+	<select id="findAllQuestion" resultMap="questionMap">
+		select *
+		from question
+	</select>
 	
+	<!-- 查询题目类型 -->
+	<select id="findRandQuestionType" parameterType="int" resultType="int">
+		select q.qt_id
+		from question as q right join 
+		(select u.question_id, u.random_id = #{id}
+		from uq_random_middle u inner join ur_middle r
+		on u.random_id = r.random_id) as m
+		on q.question_id = m.question_id
+		limit 0,1
+	</select>
 </mapper>

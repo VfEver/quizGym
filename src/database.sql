@@ -55,3 +55,13 @@ create table group_content(
 	group_id int not null,
 	question_id int not null
 );
+###用户权利表
+create table user_power(	
+	user_name varchar(20),
+	user_power int
+)
+###通知信箱
+create table mailbox(
+	username varchar(20),
+	information varchar(512)
+)

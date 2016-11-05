@@ -89,7 +89,9 @@ angular.module('controllersModule', [])
 				var result = [];
 				var isDisabled = false;
 				(function() {
+					
 					quizGeted = $scope.quizData;		
+					console.log($scope.quizData);
 					index = 0;
 					indexMax = quizGeted.length - 1;
 					userDidNumber = 0;
@@ -230,6 +232,7 @@ angular.module('controllersModule', [])
 							number++;
 						} else {
 							wrongAnswer.push({
+								id: quizGeted[i].questionId,
 								index: i,
 								content: quizGeted[i].question,
 								quizAnswers: quizGeted[i].answer,
@@ -243,10 +246,10 @@ angular.module('controllersModule', [])
 						quizGeted.forEach(function(item, index) {
 							var flag = false;
 							for (var i = 0; i < wrongAnswer.length; i++) {
-								if (item.questionId === wrongAnswer[i]) {
+								if (item.questionId === wrongAnswer[i].id) {
 									questionResult.push({
 										"questionId": item.questionId,
-										"result": 1
+										"result": 0
 									});
 									flag = true;
 									break;
@@ -255,7 +258,7 @@ angular.module('controllersModule', [])
 							if (!flag) {
 								questionResult.push({
 									"questionId": item.questionId,
-									"result": 0
+									"result": 1
 								});								
 							}
 						});
@@ -327,9 +330,9 @@ angular.module('controllersModule', [])
 		$('#randomQuizModal').modal('hide');
 		var number = Math.floor(Math.random() * 5 + 1);
 		var quizScopes = ['photography', 'music', 'film', 'science', 'sports'];
-		$scope.scopeType = quizScopes[number];
+		$scope.scopeType = quizScopes[number - 1];
 		var quizNumber = $('input[type="radio"]:checked').val();
-		////console.log(quizNumber);
+		console.log(number);
 		setTimeout(function() {
 			$.ajax({
 				url: '/quizGym/rest/questionrest/randFindQuestion',
@@ -721,13 +724,14 @@ angular.module('controllersModule', [])
 
 					if (isRandom) {
 						var questionResult = [];
+						console.log(quizGeted)
 						quizGeted.forEach(function(item, index) {
 							var flag = false;
 							for (var i = 0; i < wrongAnswer.length; i++) {
-								if (item.questionId === wrongAnswer[i]) {
+								if (item.questionId === wrongAnswer[i].id) {
 									questionResult.push({
 										"questionId": item.questionId,
-										"result": 1
+										"result": 0
 									});
 									flag = true;
 									break;
@@ -736,7 +740,7 @@ angular.module('controllersModule', [])
 							if (!flag) {
 								questionResult.push({
 									"questionId": item.questionId,
-									"result": 0
+									"result": 1
 								});								
 							}
 						});
@@ -838,6 +842,26 @@ angular.module('controllersModule', [])
 			});
 		}
 	};
+
+	var timer = null;
+	$('.user-name').on('mouseenter', function() {
+		clearTimeout(timer);
+		$('.drop-down-menu').slideDown(300);
+	});
+
+	$('.user-name').on('mouseleave', function() {
+		timer = setTimeout(function() {
+			$('.drop-down-menu').slideUp(300);
+		}, 300);
+	});
+	$('.drop-down-menu').on('mouseenter', function() {
+		clearTimeout(timer);
+	});
+	$('.drop-down-menu').on('mouseleave', function() {
+		timer = setTimeout(function() {
+			$('.drop-down-menu').slideUp(300);
+		}, 300);
+	});
 }])
 .controller('SearchResultController', ['$scope', '$rootScope', function($scope, $rootScope) {
 	$scope.searchResultList = $rootScope.searchResult;
@@ -1031,6 +1055,7 @@ angular.module('controllersModule', [])
 							number++;
 						} else {
 							wrongAnswer.push({
+								id:  quizGeted[i].questionId,
 								index: i,
 								content: quizGeted[i].question,
 								quizAnswers: quizGeted[i].answer,
@@ -1046,10 +1071,10 @@ angular.module('controllersModule', [])
 						quizGeted.forEach(function(item, index) {
 							var flag = false;
 							for (var i = 0; i < wrongAnswer.length; i++) {
-								if (item.questionId === wrongAnswer[i]) {
+								if (item.questionId === wrongAnswer[i].id) {
 									questionResult.push({
 										"questionId": item.questionId,
-										"result": 1
+										"result": 0
 									});
 									flag = true;
 									break;
@@ -1058,7 +1083,7 @@ angular.module('controllersModule', [])
 							if (!flag) {
 								questionResult.push({
 									"questionId": item.questionId,
-									"result": 0
+									"result": 1
 								});								
 							}
 						});
@@ -1126,7 +1151,177 @@ angular.module('controllersModule', [])
 				}
 			}, 100);
 	};
-}]);
+}])
+.controller('UserCenterController', ['$scope', 'GetQuizDataList', 'GetQuestionDataList', 'GetMailDataList', 'GetMailDataList', '$rootScope', 'GetUserInfo', function($scope, GetQuizDataList, GetQuestionDataList, GetMailDataList, GetMailDataList, $rootScope, GetUserInfo) {
+	GetQuizDataList.get().then(function(data) {
+		$scope.quizData = data.data;
+	});
+	GetQuestionDataList.get().then(function(data) {
+		$scope.questionData = data.data;
+	});
+	GetMailDataList.get().then(function(data) {
+		console.log(data.data)
+		$scope.mailData = data.data;
+	});
+
+	$scope.userId = $rootScope.userLoginedId;
+
+	//Photography, music , sports, film, scicence
+	GetUserInfo.get($scope.userId).then(function(data) {
+		$scope.userData = data.data;
+		$('.user-icon-box').css({
+			'background': 'url("' + $scope.userData.userIconUrl + '") no-repeat center',
+			'background-size': '250px'
+			});
+			console.log($scope.userData)
+		$('#containerPie').highcharts({
+		    chart: {
+		        plotBackgroundColor: null,
+		        plotBorderWidth: null,
+		        plotShadow: false
+		    },
+		    title: {
+		        text: 'History of filed that user selected:'
+		    },
+		    tooltip: {
+		        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+		    },
+		    credits: {
+		    	enabled: false
+			},
+		    plotOptions: {
+		        pie: {
+		            allowPointSelect: true,
+		            cursor: 'pointer',
+		            dataLabels: {
+		                enabled: false
+		            },
+		            showInLegend: true
+		        }
+		    },
+		    series: [{
+		        type: 'pie',
+		        name: 'Browser share',
+		        data: [
+		            ['Music', $scope.userData.filedRate[1]],
+		            ['Sports', $scope.userData.filedRate[2]],
+		            ['Film', $scope.userData.filedRate[3]],
+		            ['Science', $scope.userData.filedRate[4]],
+		            {
+		                name: 'Photography',
+		                y: $scope.userData.filedRate[0],
+		                sliced: true,
+		                selected: true
+		            },
+		        ]
+		    }]
+		});
+
+//		$('#containerNormal').highcharts({
+//			chart: {
+//				type:'spline'
+//			},
+//			credits: {
+//		    	enabled: false
+//			},
+//		    title: {
+//		        text: 'Accuracy of the recently 10 quizs',
+//		        x: -20 //center
+//		    },
+//		    xAxis: {
+//		        categories: ['10', '9', '8', '7', '6', '5', '4', '3', '2', '1']
+//		    },
+//		    yAxis: {
+//		        title: {
+//		            text: 'Accuracy (%)'
+//		        },
+//		        tickInterval: 10,
+//		        max: 100
+//		        // categories: ['0', '20', '40', '60', '80', '100'],
+//		    },
+//		    tooltip: {
+//		        valueSuffix: '%'
+//		    },
+//		    legend: {
+//		        layout: 'vertical',
+//		        align: 'right',
+//		        verticalAlign: 'middle',
+//		        borderWidth: 0
+//		    },
+//		    series: [{
+//		        name: 'Accuracy',
+//		        data: $scope.userData.accuracy
+//		    }],
+//		    colors: [
+//				// 'rgb(108,109,228)'
+//				'red'
+//			]
+//		});
+		var quizNumber = $scope.userData.accuracy.length;
+		var accuracyArr = [];
+		for (var i = 0; i < quizNumber; i++) {
+			accuracyArr.unshift(i + '');
+		}
+		
+		$('#containerNormal').highcharts({
+			chart: {
+				type:'spline'
+			},
+			credits: {
+		    	enabled: false
+			},
+		    title: {
+		        text: 'Accuracy of the recently 10 quizs',
+		        x: -20 //center
+		    },
+		    xAxis: {
+		        // categories: ['10', '9', '8', '7', '6', '5', '4', '3', '2', '1']
+		        categories: accuracyArr
+		    },
+		    yAxis: {
+		        title: {
+		            text: 'Accuracy (%)'
+		        },
+		        tickInterval: 10,
+		        max: 100
+		        // categories: ['0', '20', '40', '60', '80', '100'],
+		    },
+		    tooltip: {
+		        valueSuffix: '%'
+		    },
+		    legend: {
+		        layout: 'vertical',
+		        align: 'right',
+		        verticalAlign: 'middle',
+		        borderWidth: 0
+		    },
+		    series: [{
+		        name: 'Accuracy',
+		        data: $scope.userData.accuracy
+		    }],
+		    colors: [
+				// 'rgb(108,109,228)'
+				'red'
+			]
+		});
+	});
+}])
+.controller('FooterControler', ['$scope', function($scope) {
+	var timer;
+	$('.hover-check').on('mouseenter', function() {
+		clearTimeout(timer);
+		$('.footer').css('bottom', '0');
+	});
+	$('.footer').on('mouseenter', function() {
+		clearTimeout(timer);
+	});
+	$('.footer').on('mouseleave', function() {
+		timer = setTimeout(function() {
+			$('.footer').css('bottom', '-145px');
+		}, 300);
+	});
+}])
+
 
 			// 			{
 			// 	"index": "3",

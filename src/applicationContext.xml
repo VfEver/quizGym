@@ -80,16 +80,6 @@
       	<property name="questionService" ref="questionServiceID"></property>
       </bean>
       
-      <!-- 配置user的bean -->
-      <bean id="userDaoID" class="com.quizGym.dao.impl.UserDao">
-      	<property name="sqlSessionFactory" ref="sqlSessionFactoryBeanID"></property>
-      </bean>
-      <bean id="userServiceID" class="com.quizGym.service.impl.UserService">
-      	<property name="userDao" ref="userDaoID"></property>
-      </bean>
-      <bean id="userRestID" class="com.quizGym.rest.UserRest">
-      	<property name="userService" ref="userServiceID"></property>
-      </bean>
       
       <!-- 配置groupquestion的bean -->
       <bean id="groupQuestionDaoID" class="com.quizGym.dao.impl.GroupQuestionDao">
@@ -103,6 +93,18 @@
       	<property name="questionService" ref="questionServiceID"></property>
       </bean>
       
+      <!-- 配置user的bean -->
+      <bean id="userDaoID" class="com.quizGym.dao.impl.UserDao">
+      	<property name="sqlSessionFactory" ref="sqlSessionFactoryBeanID"></property>
+      </bean>
+      <bean id="userServiceID" class="com.quizGym.service.impl.UserService">
+      	<property name="userDao" ref="userDaoID"></property>
+      </bean>
+      <bean id="userRestID" class="com.quizGym.rest.UserRest">
+      	<property name="userService" ref="userServiceID"></property>
+      	<property name="groupQuestionService" ref="groupQuestionServiceID"></property>
+      	<property name="questionService" ref="questionServiceID"></property>
+      </bean>
       
       
       

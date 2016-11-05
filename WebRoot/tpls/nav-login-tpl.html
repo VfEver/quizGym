@@ -1,7 +1,11 @@
 <div class="nav-login" ng-controller="SearchBoxController">
+	<div class="user-name pull-right">BOB</div>
+	<div class="drop-down-menu">
+		<a href="/quizGym/#/usercenter">User Center</a>
+		<a href="">Log out</a>
+	</div>
 	<span class="glyphicon glyphicon-search search-button pull-right" ng-click="getSearchFn()"></span>
  	<div class="search-box col-md-3 pull-right">
  		<input type="text" placeholder="search" class="form-control" ng-model="keyOfSearch" ng-keydown="keyDownGetSearch($event)">
  	</div>
-
 </div>

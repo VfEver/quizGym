@@ -3,12 +3,14 @@ package com.quizGym.dao.impl;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 
 import com.quizGym.dao.IUserDao;
+import com.quizGym.entity.MailBox;
 import com.quizGym.entity.User;
 
 public class UserDao implements IUserDao{
@@ -57,7 +59,7 @@ public class UserDao implements IUserDao{
 	}
 
 	@Override
-	public void saveDoneQuestion(int userID, int questionID, int status) {
+	public void saveDoneQuestion(int userID, int questionID, int status, Date time) {
 		
 		SqlSession sqlSession = sqlSessionFactory.openSession();
 		
@@ -65,11 +67,95 @@ public class UserDao implements IUserDao{
 		map.put("userID", userID);
 		map.put("questionID", questionID);
 		map.put("status", status);
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+		String date = sdf.format(time);
+		map.put("time", Integer.parseInt(date));
 		
 		sqlSession.insert(User.class.getName() + ".saveDoneQuestion", map);
 		sqlSession.commit();
 		sqlSession.close();
 	}
-	
+
+	@Override
+	public User findAccount(String account) {
+
+		SqlSession sqlSession = sqlSessionFactory.openSession();
+		User user = sqlSession.selectOne(User.class.getName() + ".findAccount", account);
+		sqlSession.close();
+		return user;
+	}
+
+	@Override
+	public int findPower(String username) {
+		
+		SqlSession sqlSession = sqlSessionFactory.openSession();
+		int power = sqlSession.selectOne(User.class.getName() + ".findPower", username);
+		sqlSession.close();
+		return power;
+	}
+
+	@Override
+	public List<User> findAllUser() {
+
+		SqlSession sqlSession = sqlSessionFactory.openSession();
+		List<User> users = sqlSession.selectList(User.class.getName() + ".findAllUser");
+		sqlSession.close();
+		
+		return users;
+	}
+
+	@Override
+	public void updateScore(int userID, int score) {
+
+		SqlSession sqlSession = sqlSessionFactory.openSession();
+		Map<String, Integer> map = new HashMap<String, Integer>();
+		map.put("id", userID);
+		map.put("score", score);
+		sqlSession.update(User.class.getName() + ".updateScore", map);
+		sqlSession.commit();
+		sqlSession.close();
+		
+	}
+
+	@Override
+	public void updateType(int userID, int type) {
+		
+		SqlSession sqlSession = sqlSessionFactory.openSession();
+		Map<String, Integer> map = new HashMap<String, Integer>();
+		map.put("id", userID);
+		map.put("type", type);
+		sqlSession.update(User.class.getName() + ".updateScore", map);
+		sqlSession.commit();
+		sqlSession.close();
+	}
+
+	@Override
+	public List<MailBox> findInfo() {
+		
+		SqlSession sqlSession = sqlSessionFactory.openSession();
+		List<MailBox> informations = sqlSession.selectList(MailBox.class.getName() + ".findInfo");
+		sqlSession.close();
+		return informations;
+	}
+
+	@Override
+	public User findUserByID(int id) {
+		
+		SqlSession sqlSession = sqlSessionFactory.openSession();
+		User user = sqlSession.selectOne(User.class.getName() + ".findUserByID", id);
+		sqlSession.close();
+		return user;
+	}
+
+	@Override
+	public void updateUserHeadImage(String userID, String imagePath) {
+
+		SqlSession sqlSession = sqlSessionFactory.openSession();
+		Map<String, String> map = new HashMap<String, String> ();
+		map.put("id", userID);
+		map.put("head", imagePath);
+		sqlSession.update(User.class.getName() + ".updateUserHeadImage", map);
+		sqlSession.close();
+	}
 	
 }
