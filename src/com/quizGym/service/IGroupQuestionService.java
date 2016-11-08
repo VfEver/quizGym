@@ -84,4 +84,19 @@ public interface IGroupQuestionService {
 	 * @return
 	 */
 	public List<Map<String, Integer>> findRandomQuestions(int userID);
+	
+	/**
+	 * 更新套题是否通过
+	 * @param groupQuestionID
+	 * @param status
+	 * @param reason
+	 */
+	public void passGroupQuesion(int groupQuestionID, int status, String reason);
+	
+	/**
+	 * 根据用户名查询此人出过的所有题目
+	 * @param username
+	 * @return
+	 */
+	public List<GroupQuestion> findGroupQuestionByUsername(String username);
 }

@@ -87,4 +87,10 @@ public class UserService implements IUserService {
 		userDao.updateUserHeadImage(userID, imagePath);
 	}
 
+	@Override
+	public void saveInfo(String username, String information) {
+		
+		userDao.saveInfo(username, information);
+	}
+
 }

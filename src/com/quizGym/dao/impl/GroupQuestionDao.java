@@ -117,4 +117,27 @@ public class GroupQuestionDao implements IGroupQuestionDao {
 		return list;
 	}
 
+	@Override
+	public void passGroupQuesion(int groupQuestionID, int status, String reason) {
+		
+		SqlSession sqlSession = sqlSessionFactory.openSession();
+		Map<String, String> map = new HashMap<> ();
+		map.put("id", ""+groupQuestionID);
+		map.put("status", ""+status);
+		map.put("reason", reason);
+		sqlSession.update(GroupQuestion.class.getName() + ".passGroupQuesion", map);
+		sqlSession.close();
+	}
+
+	@Override
+	public List<GroupQuestion> findGroupQuestionByUsername(String username) {
+		
+		SqlSession sqlSession = sqlSessionFactory.openSession();
+		List<GroupQuestion> infoLists = sqlSession.selectList(GroupQuestion.class.getName() + 
+				".findGroupQuestionByUsername", username);
+		sqlSession.close();
+		
+		return infoLists;
+	}
+
 }

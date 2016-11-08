@@ -12,7 +12,9 @@ import org.apache.ibatis.session.SqlSessionFactory;
 
 import com.quizGym.dao.IQuestionDao;
 import com.quizGym.entity.Question;
+import com.quizGym.entity.QuestionComment;
 import com.quizGym.entity.RandomQuestion;
+import com.quizGym.util.DateUtils;
 
 public class QuestionDao implements IQuestionDao {
 
@@ -123,6 +125,25 @@ public class QuestionDao implements IQuestionDao {
 		int typeID = sqlSession.selectOne(Question.class.getName() + ".findRandQuestionType", randomID);
 		sqlSession.close();
 		return typeID;
+	}
+
+	@Override
+	public void saveComment(QuestionComment questionComment) {
+		
+		SqlSession sqlSession = sqlSessionFactory.openSession();
+		sqlSession.insert(QuestionComment.class.getName() + ".saveComment", questionComment);
+		
+		sqlSession.close();
+	}
+
+	@Override
+	public List<QuestionComment> findCommentByQuestionID(int questionID) {
+		
+		SqlSession sqlSession = sqlSessionFactory.openSession();
+		List<QuestionComment> commentList = sqlSession.selectList(QuestionComment.class.getName() + ".findCommentByQuestionID", questionID);
+		sqlSession.close();
+		
+		return commentList;
 	}
 
 }

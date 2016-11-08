@@ -10,6 +10,7 @@
 		<typeAlias type="com.quizGym.entity.GroupQuestion" alias="groupQuestion"/>
 		<typeAlias type="com.quizGym.entity.MailBox" alias="mailBox"/>
 		<typeAlias type="com.quizGym.entity.RandomQuestion" alias="randomQuestion"/>
+		<typeAlias type="com.quizGym.entity.QuestionComment" alias="questionComment"/>
 	</typeAliases>
 	<mappers>
 		<mapper resource="com/quizGym/entity/questionMapper.xml"/>
@@ -18,5 +19,6 @@
 		<mapper resource="com/quizGym/entity/groupQuestionMapper.xml"/>
 		<mapper resource="com/quizGym/entity/mailBoxMapper.xml"/>
 		<mapper resource="com/quizGym/entity/randomQuestionMapper.xml"/>
+		<mapper resource="com/quizGym/entity/questionCommentMapper.xml"/>
 	</mappers>
 </configuration>

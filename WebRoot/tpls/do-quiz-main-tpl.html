@@ -40,7 +40,7 @@
 		</div>
 	</div>
 	<!-- modal for result -->
-	<div class='modal fade' id='myModal'>
+	<div class='modal fade' id='myModal1'>
 		<div class='modal-dialog modal-lg'>
 			<div class='modal-content'>
 				<div class="modal-header">
@@ -48,8 +48,9 @@
 					<h2 class="modal-title">Result</h2>
 				</div>
 				<div class="modal-body">
-					<p style="font-size:20px;" ></p>
-					<p><strong>错题详情 :</strong></p>
+					<p style="font-size:20px;" class="correct"></p>
+					<p style="font-size:20px;">Accuracy: <span class="user-accuracy-number" style="color: red"></span></p>
+					<!-- <p><strong>错题详情 :</strong></p>
 					<div class="modal-result-info">
 						<p class="result-content"></p>
 						<div class="result-answer">
@@ -59,19 +60,19 @@
 							<p class="answerD"></p>
 						</div>
 						<p class="correct-answer"></p>
-						解析 :
-						<p class="reason-of-answer"></p>
-					</div>
+						
+						<p class="reason-of-answer"></p> -->
 				</div>
 				<div class="modal-footer">
 					<div class="btn-toolbar"></div>
-					<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+					<button type="button" class="btn btn-success check-detail-btn">check details</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal">close</button>
 				</div>
 			</div>
 		</div>
 	</div>
 
-	<div class='modal fade' id='myModalAbout'>
+	<!-- <div class='modal fade' id='myModalAbout'>
 		<div class='modal-dialog modal-lg'>
 			<div class='modal-content'>
 				<div class="modal-header">
@@ -91,7 +92,7 @@
 				</div>
 			</div>
 		</div>
-	</div>
+	</div> -->
 <!-- 	<nav  class="navigation">
 	    <input type="checkbox" id="post" class="postToggle" />
 	    <label for="post" class="postBtn"></label>

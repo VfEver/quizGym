@@ -12,5 +12,8 @@
 		select * 
 		from mailbox
 	</select>
-	
+	<!-- 插入通知信息 -->
+	<insert id="saveInfo" parameterType="map">
+		insert into mailbox values(#{username}, #{information});
+	</insert>	
 </mapper>

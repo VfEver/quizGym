@@ -7,7 +7,7 @@ package com.quizGym.entity;
  */
 public class MailBox {
 	private String username;
-	private String infomation;
+	private String information;
 	
 	public String getUsername() {
 		return username;
@@ -16,9 +16,9 @@ public class MailBox {
 		this.username = username;
 	}
 	public String getInfomation() {
-		return infomation;
+		return information;
 	}
-	public void setInfomation(String infomation) {
-		this.infomation = infomation;
+	public void setInfomation(String information) {
+		this.information = information;
 	}
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.quizGym.entity.Question;
+import com.quizGym.entity.QuestionComment;
 import com.quizGym.entity.RandomQuestion;
 
 public interface IQuestionService {
@@ -48,4 +49,19 @@ public interface IQuestionService {
 	 * @return
 	 */
 	public int findRandQuestionType(int randomID);
+	
+	/**
+	 * 存贮用户对题目的评论信息
+	 * @param username
+	 * @param comment
+	 * @param date
+	 */
+	public void saveComment(QuestionComment questionComment);
+	
+	/**
+	 * 根据题目id查询题目的评论信息
+	 * @param questionID
+	 * @return
+	 */
+	public List<QuestionComment> findCommentByQuestionID(int questionID);
 }

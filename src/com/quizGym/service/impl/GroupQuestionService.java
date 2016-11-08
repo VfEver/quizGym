@@ -80,4 +80,16 @@ public class GroupQuestionService implements IGroupQuestionService {
 		return groupQuestionDao.findRandomQuestions(userID);
 	}
 
+	@Override
+	public void passGroupQuesion(int groupQuestionID, int status, String reason) {
+		
+		groupQuestionDao.passGroupQuesion(groupQuestionID, status, reason);
+	}
+
+	@Override
+	public List<GroupQuestion> findGroupQuestionByUsername(String username) {
+
+		return groupQuestionDao.findGroupQuestionByUsername(username);
+	}
+
 }

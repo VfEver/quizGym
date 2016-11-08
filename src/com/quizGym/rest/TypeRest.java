@@ -23,6 +23,11 @@ public class TypeRest {
 		this.typeService = typeService;
 	}
 	
+	/**
+	 * 添加新的类型
+	 * @param request
+	 * @return
+	 */
 	@GET
 	@Path("/addType")
 	@Produces(MediaType.TEXT_PLAIN)

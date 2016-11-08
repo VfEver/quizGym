@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+	<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.quizGym.entity.QuestionComment">
+	<resultMap type="questionComment" id="questionCommnetMap">
+		<result property="id" column="question_id" />
+		<result property="userName" column="user_name"/>
+		<result property="commnet" column="user_comment" />
+		<result property="time" column="comment_time" />
+	</resultMap>
+	
+	<!-- 存储用户对题目的评论 -->
+	<insert id="saveComment" parameterType="questionComment">
+		insert into question_comment
+		values(#{id}, #{userName}, #{commnet}, #{time});
+	</insert>
+	
+	<!-- 查看某个题目的所有评论 -->
+	<select id="findCommentByQuestionID" parameterType="int" resultMap="questionCommnetMap">
+		select q.*
+		from question_comment q
+		where q.question_id = #{id}
+		order by q.comment_time desc
+	</select>
+	
+</mapper>

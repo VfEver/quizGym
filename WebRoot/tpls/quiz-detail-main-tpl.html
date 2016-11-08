@@ -1,0 +1,47 @@
+<div class="quiz-detail-main" ng-controller="QuizDetailController">
+	<div class="container">
+		<h3>Quiz Detail</h3>
+		<div class="btn-group">
+			<button class="btn check-detail-nav-btn" ng-repeat="button in checkDetailData" ng-class="{'btn-success': button.userResult === button.result, 'btn-danger': button.userResult !== button.result, 'btn-border': $index === currentIndex}" ng-click="jumpToFn($index)">{{$index + 1}}</button>
+		</div>
+		<hr />
+		<h3>{{checkDetailData[currentIndex].question}}</h3>
+		<p class="check-detail-option-info">{{checkDetailData[currentIndex].answer[0]}}</p>
+		<p class="check-detail-option-info">{{checkDetailData[currentIndex].answer[1]}}</p>
+		<p class="check-detail-option-info">{{checkDetailData[currentIndex].answer[2]}}</p>
+		<p class="check-detail-option-info">{{checkDetailData[currentIndex].answer[3]}}</p>
+		<hr />
+		<p class="check-detail-answer-info">Correct Answer: <i class="check-detail-answer check-detail-answer-correct">{{checkDetailData[currentIndex].result}}</i>;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Your Answer: <i class="check-detail-answer" ng-class="{'check-detail-answer-correct': checkDetailData[currentIndex].result === checkDetailData[currentIndex].userResult, 'check-detail-answer-error': checkDetailData[currentIndex].result !== checkDetailData[currentIndex].userResult}">{{checkDetailData[currentIndex].userResult}}</i></p>
+		<h4>Reason: {{checkDetailData[currentIndex].reason}}</h4>
+
+		<div class="row comment-input-area"">
+			<div class="col-md-7">
+				<textarea class="form-control" rows="4" placeholder="Your comment goes here" ng-model="userComment"></textarea>
+				<button class="btn btn-success submit-comment" ng-click="submitCommentFn()">submit comment</button>
+			</div>
+		</div>
+		<hr/>
+		<div style="text-align: center;cursor: pointer;">
+			<a href="javascript: void(0)" ng-click="getCommentFn()">Show Comments</a>
+			<!-- <p ng-click="getCommentFn()">Show Comments</p> -->
+		</div>
+		<div class="comment-box">
+			<ul>
+				<li ng-repeat="comment in commentData">
+					<div class="media comment-box-item">
+					 	<a class="media-left" href="#">
+					    	<img class="media-object" ng-src={{comment.imageIcon}} width="60" height="60">
+					  	</a>
+					 	<div class="media-body">
+						    <h4 class="media-heading">{{comment.userName}}</h4>
+						    {{comment.content}}
+					 	</div>
+					 	
+					 	<span class="pull-right">{{comment.time}} &nbsp;&nbsp;&nbsp;#{{commentData.length - $index}}</span>
+					</div>	
+				</li>	
+			</ul>
+		</div>
+		<hr />
+	</div>
+</div>

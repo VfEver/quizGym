@@ -23,6 +23,7 @@ import com.quizGym.entity.GroupQuestion;
 import com.quizGym.entity.Question;
 import com.quizGym.service.IGroupQuestionService;
 import com.quizGym.service.IQuestionService;
+import com.quizGym.util.DateUtils;
 import com.quizGym.util.TypeUtils;
 
 /**
@@ -67,6 +68,7 @@ public class GroupQuestionRest {
 			sb.append(line);
 		}
 		
+		//转化为json对象
 		JSONObject jsonObject = JSONObject.fromObject(sb.toString());
 		
 		String username = jsonObject.getString("createrName");
@@ -167,6 +169,7 @@ public class GroupQuestionRest {
 			JSONObject json = new JSONObject();
 			json.put("index", index);
 			json.put("question", question.getName());
+			json.put("questionId", question.getId());
 			String[] ans = new String[4];
 			ans[0]="A、" + question.getAnswerA();
 			ans[1]="B、" + question.getAnswerB();
@@ -238,4 +241,76 @@ public class GroupQuestionRest {
 		return result.toString();
 	}
 	
+	/**
+	 * 对于套题信息，通过或者不通过，给通知
+	 * @param request
+	 * @return
+	 */
+	@GET
+	@Path("/passinfo")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String passGroupQuestion(@Context HttpServletRequest request) {
+		
+		String groupQuestionID = request.getParameter("id");
+		String status = request.getParameter("state");
+		if (groupQuestionID != null && !"".equals(groupQuestionID)) {
+			if (status.equals("1")) {
+				
+				groupQuestionService.passGroupQuesion(Integer.parseInt(groupQuestionID), 
+						Integer.parseInt(status), "pass");
+				
+			} else if (status.equals("-1")) {
+				
+				String reason = request.getParameter("reason");
+				groupQuestionService.passGroupQuesion(Integer.parseInt(groupQuestionID), 
+						Integer.parseInt(status), reason);
+				
+			}
+		}
+		
+		JSONArray result = new JSONArray();
+		List<GroupQuestion> groups = groupQuestionService.findCheckList();
+		for (GroupQuestion groupQuestion : groups) {
+			JSONObject json = new JSONObject();
+			json.put("id", groupQuestion.getId());
+			json.put("listName", groupQuestion.getName());
+			json.put("createrName", groupQuestion.getCreaterName());
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM--dd");
+			String time = sdf.format(groupQuestion.getCreateTime());
+			json.put("createTime", time);
+			int typeID = groupQuestion.getTypeID();
+			json.put("scope", TypeUtils.getTypeName(typeID));
+			result.add(json);
+		}
+		
+		return result.toString();
+	}
+	
+	/**
+	 * 查询Prouser出过的题目信息
+	 * @param request
+	 * @return
+	 */
+	@GET
+	@Path("/selfgroupinfo")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String selfGroupStatus(@Context HttpServletRequest request) {
+		
+		String username = request.getParameter("username");
+		List<GroupQuestion> listInfos = groupQuestionService.findGroupQuestionByUsername(username);
+		
+		JSONArray array = new JSONArray();
+		
+		for (GroupQuestion g : listInfos) {
+			JSONObject json = new JSONObject();
+			json.put("id", g.getId());
+			json.put("name", g.getName());
+			json.put("time", DateUtils.dateToString("yyyy-MM-dd", g.getCreateTime()));
+			json.put("status", g.getStatus());
+			json.put("reason", g.getReason());
+			array.add(json);
+		}
+		
+		return array.toString();
+	}
 }

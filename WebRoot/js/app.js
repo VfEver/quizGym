@@ -1,43 +1,284 @@
-angular.module('lApp', ['ui.router', 'controllersModule', 'servicesModule'], function($httpProvider) {
-  $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8'; 
-  var param = function(obj) {
-    var query = '', name, value, fullSubName, subName, subValue, innerObj, i;
-      
-    for(name in obj) {
-      value = obj[name];
-        
-      if(value instanceof Array) {
-        for(i=0; i<value.length; ++i) {
-          subValue = value[i];
-          fullSubName = name + '[' + i + ']';
-          innerObj = {};
-          innerObj[fullSubName] = subValue;
-          query += param(innerObj) + '&';
-        }
-      }
-      else if(value instanceof Object) {
-        for(subName in value) {
-          subValue = value[subName];
-          fullSubName = name + '[' + subName + ']';
-          innerObj = {};
-          innerObj[fullSubName] = subValue;
-          query += param(innerObj) + '&';
-        }
-      }
-      else if(value !== undefined && value !== null)
-        query += encodeURIComponent(name) + '=' + encodeURIComponent(value) + '&';
-    }
-      
-    return query.length ? query.substr(0, query.length - 1) : query;
-  };
- 
-  $httpProvider.defaults.transformRequest = [function(data) {
-    return angular.isObject(data) && String(data) !== '[object File]' ? param(data) : data;
-  }];
-})
+angular.module('lApp', ['ui.router', 'controllersModule', 'servicesModule'])
 .run(function($rootScope, $state, $stateParams) {
     $rootScope.$state = $state;
     $rootScope.$stateParams = $stateParams;
+
+    $rootScope.showQuizFn = function(isRandom, scope) {
+		setTimeout(function() {
+				//alert('asd');
+				$('#selectedType').html(scope.scopeType);
+				var quizGeted = [];
+				var index = 0;
+				var indexMax = 0;
+				var userAnswer;
+				var userDidNumber = 0;
+				var $arrRadios;
+				var result = [];
+				var isDisabled = false;
+				(function() {
+					quizGeted = scope.quizData;		
+					index = 0;
+					indexMax = quizGeted.length - 1;
+					userDidNumber = 0;
+					quizNumber = indexMax + 1;
+					userAnswer = new Array(quizNumber);
+					for(var i = 0; i < quizNumber; i++) {
+						result.push(quizGeted[i].result);
+					}
+					insertQuiz(0);
+					quizView();
+				})();
+				function insertQuiz(index) {
+					var questionNumber = quizGeted[index];
+					////console.log(questionNumber)
+					$('.num').html('NO.' + (index + 1) + ' :');
+					var firstChar = questionNumber.question.substring(0, 1);
+					var quizHtml = '<div class="question">'
+								 + '<p><h3>&nbsp;&nbsp;&nbsp;&nbsp;' + firstChar + '&nbsp;</h3>' + questionNumber.question.substring(1) + '</p></div>'
+								 + '<div class="choose-answer" id="answers">'
+								 + '<label for="A">'
+								 + '<input type="radio" id="A" name="answer" value="A"/>'
+								 + '<p>' + questionNumber.answer[0] + '</p>'
+								 + '</label>'
+								 + '<label for="B">'
+								 + '<input type="radio" id="B" name="answer" value="B"/>'
+								 + '<p>' + questionNumber.answer[1] + '</p>'
+								 + '</label>'
+								 + '<label for="C">'
+								 + '<input type="radio" id="C" name="answer" value="C"/>'
+								 + '<p>' + questionNumber.answer[2] + '</p>'
+								 + '</label>'
+								 + '<label for="D">'
+								 + '<input type="radio" id="D" name="answer" value="D"/>'
+								 + '<p>' + questionNumber.answer[3] + '</p>'
+								 + '</label>'
+								 + '</div>';
+					$('.question-info').html(quizHtml);
+					$('.question').css('display', 'none').fadeIn(600);
+					$('#answers').css('display', 'none').slideDown(600);
+
+					var oInfo = $('.acomplish-info .acomplished');
+					var oBar = $('.acomplish-info .progress .progress-bar');
+					if(index === 0 && !userAnswer[0] && !userAnswer[1] && !userAnswer[2] && !userAnswer[3]) {
+						oInfo.html('acomplished 0&nbsp;&nbsp;');
+						oBar.html('0/' + (indexMax + 1));
+						oBar.css('width', '0');
+
+					}
+					var $arrRadios = $('input[type="radio"]');
+					$arrRadios.each(function(i, ele) {
+						$(ele).change(function() {
+							userAnswer[index] = $('input[type="radio"]:checked').val();
+							for(var i = 0, len = userAnswer.length, didNumber = 0; i < len; i++) {
+								if(userAnswer[i]) {
+									didNumber ++;
+								}
+							}
+							userDidNumber = didNumber;
+							oInfo.html('acomplished ' + userDidNumber + '&nbsp;&nbsp;');
+							oBar.html(userDidNumber + '/' + (indexMax + 1));
+							oBar.css('width', (userDidNumber / quizNumber) * 100 + '%');
+						});
+					});
+				}
+
+				function quizView() {
+					$('#pre').attr('disabled', true);
+					$('#next').on('click',function() {
+						if(index < indexMax) {
+							insertQuiz(++index);
+							if(isDisabled) {
+								$('input[type="radio"]').prop('disabled', true);
+							}
+							if(userAnswer[index]) {
+								$('input[value="' + userAnswer[index] + '"]').prop('checked', true);
+							}
+							$('#pre').attr('disabled', false);
+							if(index == indexMax) {
+								$(this).attr('disabled', true);
+							}
+						}
+					});
+					$('#pre').on('click', function() 	{
+						if(index > 0) {
+							insertQuiz(--index);
+							if(isDisabled) {
+								$('input[type="radio"]').prop('disabled', true);
+							}
+							if(userAnswer[index]) {
+								$('input[value="' + userAnswer[index] + '"]').prop('checked', true);
+							}
+							$('#next').attr('disabled', false);
+							if(index === 0) {
+								$(this).attr('disabled', true);
+							}
+						}
+					});
+					
+					$('#submit').on('click', function() {
+						var flag = true;
+						for(var i = 0, len = userAnswer.length; i < len; i++) {
+							if(!userAnswer[i]) {
+								flag = false;
+							}
+						}
+						if(!flag) {
+							if(!confirm('There still exist unanswered question(s), still submit ?')) {
+								return;
+							}
+						}
+						callModal();
+						isDisabled = true;
+						$('input[type="radio"]').prop('disabled', true);
+						$(this).prop('disabled', true);
+
+//						var checkBtn = $('<button class="btn btn-info" id="checkAnswerBtn">Check errors</button>').on('click', function() {
+//							callModal();
+//						});
+//						$('.buttons').append(checkBtn);
+					});
+				}
+
+				function recordAnswer() {
+					userAnswer[index] = $('input:checked').val();
+				}
+				
+				function callModal() {
+					var quizResult = '';
+					var number = 0;
+					var wrongAnswer = [];
+					for(var i = 0; i < quizNumber; i++) {
+						if(!userAnswer[i]) {
+							userAnswer[i] = 'blank';
+						}
+						quizResult += userAnswer[i] + ' ';
+						if(userAnswer[i] == result[i]) {
+							number++;
+						} else {
+							wrongAnswer.push({
+								id: quizGeted[i].questionId,
+								index: i,
+								content: quizGeted[i].question,
+								quizAnswers: quizGeted[i].answer,
+								userGived: userAnswer[i],
+								correctAnswer: result[i]
+							});
+						}
+					}
+
+					var questionResultCheck = quizGeted.slice(0);
+					// console.log(userAnswer)
+					userAnswer.forEach(function(item, index) {
+						questionResultCheck[index].userResult = item;
+					});
+					// questionResultCheck.forEach(function(item, index) {
+					// 	var flag = false;
+					// 	for (var i = 0; i < wrongAnswer.length; i++) {
+					// 		if (item.questionId === wrongAnswer[i].id) {
+					// 			questionResultCheck[index].user
+					// 			break;
+					// 		}
+					// 	}
+					// });
+
+					// quizGeted.forEach(function(item, index) {
+					// 	var flag = false;
+					// 	for (var i = 0; i < wrongAnswer.length; i++) {
+					// 		if (item.questionId === wrongAnswer[i].id) {
+					// 			questionResultCheck.push({
+					// 				"questionId": item.questionId,
+					// 				"result": 0,
+					// 				""
+					// 			});
+					// 			flag = true;
+					// 			break;
+					// 		}
+					// 	}
+					// 	if (!flag) {
+					// 		questionResultCheck.push({
+					// 			"questionId": item.questionId,
+					// 			"result": 1
+					// 		});								
+					// 	}
+					// });
+
+					if (isRandom) {
+						var questionResult = [];
+						quizGeted.forEach(function(item, index) {
+							var flag = false;
+							for (var i = 0; i < wrongAnswer.length; i++) {
+								if (item.questionId === wrongAnswer[i].id) {
+									questionResult.push({
+										"questionId": item.questionId,
+										"result": 0
+									});
+									flag = true;
+									break;
+								}
+							}
+							if (!flag) {
+								questionResult.push({
+									"questionId": item.questionId,
+									"result": 1
+								});								
+							}
+						});
+
+						var jsonObj = {
+								"user_id": $rootScope.userLoginedId,
+								"questionInfo": questionResult
+							};
+//						console.log('random');
+//						console.log(jsonObj);
+						$.ajax({
+							url: '/quizGym/rest/userrest/savedonequestion',
+							method: 'POST',
+							contentType: 'application/json',
+							dataType: 'json',
+							data: JSON.stringify(jsonObj)
+						});
+					} else {
+//						console.log('not random');
+//						console.log(jsonObj);
+						$.ajax({
+							url:  '/quizGym/rest/userrest/savedonelist',
+							contentType: 'application/json',
+							dataType: 'json',
+							data: {
+								"quiz_id": scope.quizId,
+								"user_id": scope.userId,
+								"worng_num": quizNumber - number,
+								"correct_num": number
+							}
+						});
+					}
+					
+					if(wrongAnswer.length === 0) {
+						var allCorrectModal = '<h1 style="color: green">All correct！GoodJob!</h1>';
+						$('.modal-body').html('').html(allCorrectModal);
+						console.log('all correct');
+					} else {
+						var oModalResult = $('.modal-body .modal-result-info');
+//						var oModalFooterPre = $('.modal-footer .btn-toolbar');
+//						oModalFooterPre.html('');
+//						console.log(number);
+						$('#myModal1 .modal-body p').eq(0).html('You got <strong style="color:green">' + number + '</strong> correct answers, failed ' + '<strong style="color:red">' + (quizNumber - number) + '</strong> questions');
+						$('#myModal1 .modal-body p').eq(1).find('span').html((number / quizNumber).toFixed(4) * 100 + '%');
+						$('#myModal1').modal();
+					}
+
+					$('.check-detail-btn').on('click', function() {
+						$('#myModal').modal('hide');
+						$rootScope.checkDetailData = questionResultCheck;
+						setTimeout(function() {
+							$('body').removeClass('modal-open');
+							window.open('/quizGym/#/quizdetail', '_self');
+						}, 400);
+					});
+				}
+
+			}, 100);
+	};
 })
 .config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
 	$urlRouterProvider.otherwise('/index');
@@ -50,6 +291,9 @@ angular.module('lApp', ['ui.router', 'controllersModule', 'servicesModule'], fun
 				},
 				'main': {
 					templateUrl: 'tpls/welcome-main-tpl.html'
+				},
+				'footer': {
+					templateUrl: 'tpls/footer-welcome-tpl.html'
 				}
 			}
 		})
@@ -156,6 +400,20 @@ angular.module('lApp', ['ui.router', 'controllersModule', 'servicesModule'], fun
 			views: {
 				'main': {
 					templateUrl: 'tpls/user-center-main-tpl.html'
+				},
+				'navinfo': {
+					templateUrl: 'tpls/nav-login-tpl.html'
+				},
+				'footer': {
+					templateUrl: 'tpls/footer-tpl.html'
+				}
+			}
+		})
+		.state('quizdetail', {
+			url: '/quizdetail',
+			views: {
+				'main': {
+					templateUrl: 'tpls/quiz-detail-main-tpl.html'
 				},
 				'navinfo': {
 					templateUrl: 'tpls/nav-login-tpl.html'

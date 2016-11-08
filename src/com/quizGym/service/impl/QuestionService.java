@@ -6,6 +6,7 @@ import java.util.Map;
 
 import com.quizGym.dao.IQuestionDao;
 import com.quizGym.entity.Question;
+import com.quizGym.entity.QuestionComment;
 import com.quizGym.entity.RandomQuestion;
 import com.quizGym.service.IQuestionService;
 
@@ -74,6 +75,18 @@ public class QuestionService implements IQuestionService {
 	public int findRandQuestionType(int randomID) {
 
 		return questionDao.findRandQuestionType(randomID);
+	}
+
+	@Override
+	public void saveComment(QuestionComment questionComment) {
+		
+		questionDao.saveComment(questionComment);
+	}
+
+	@Override
+	public List<QuestionComment> findCommentByQuestionID(int questionID) {
+		
+		return questionDao.findCommentByQuestionID(questionID);
 	}
 
 }

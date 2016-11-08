@@ -8,6 +8,8 @@
 		<result property="name" column="group_name"/>
 		<result property="createrName" column="creater_name"/>
 		<result property="createTime" column="create_time"/>
+		<result property="status" column="status"/>
+		<result property="reason" column="reject_reason"/>
 	</resultMap>
 	
 	<!-- 插入套题信息 -->
@@ -94,7 +96,18 @@
 		where user_id = #{id};
 	</select>
 	
+	<!-- prouser的套题信息通过或者不通过 -->
+	<update id="passGroupQuesion" parameterType="map">
+		update group_question
+		set status = #{status}, reject_reason = #{reason}
+		where group_id = #{id}
+	</update>
 	
-	
+	<!-- 根据用户名查询此人出过的所有题目 -->
+	<select id="findGroupQuestionByUsername" parameterType="string" resultMap="groupQuestionMap">
+		select *
+		from group_question
+		where creater_name = #{name}
+	</select>
 	
 </mapper>

@@ -1,7 +1,9 @@
 package com.quizGym.rest;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.text.ParseException;
@@ -21,9 +23,9 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
-import sun.misc.BASE64Decoder;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import sun.misc.BASE64Decoder;
 
 import com.quizGym.entity.DoneInfo;
 import com.quizGym.entity.GroupQuestion;
@@ -33,6 +35,7 @@ import com.quizGym.entity.User;
 import com.quizGym.service.IGroupQuestionService;
 import com.quizGym.service.IQuestionService;
 import com.quizGym.service.IUserService;
+import com.quizGym.util.DateUtils;
 import com.quizGym.util.TypeUtils;
 /**
  * user rest服务层
@@ -81,6 +84,7 @@ public class UserRest {
 	@Path("/loginSuccess")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String login(@Context HttpServletRequest request) throws Exception {
+		
 		BufferedReader br = new BufferedReader(
 						new InputStreamReader(
 						(ServletInputStream) request.getInputStream()));  
@@ -104,14 +108,35 @@ public class UserRest {
         		return "-1";
         	}
         	
-        	//将username存入session
+        	//将username,和userID存入session
         	HttpSession session = request.getSession();
         	session.setAttribute("username", username);
+        	session.setAttribute("userID", returnUser.getId());
+        	
         	JSONObject json = new JSONObject();
+        	
         	json.put("username", returnUser.getName());
         	json.put("userid", returnUser.getId());
+        	
+        	//存入用户类型信息
+        	int type = returnUser.getType();
+        	if (type == 0) {
+        		json.put("usertype", "NORMAL");
+        	} else if (type == 1) {
+        		json.put("usertype", "PRO");
+        	} else if (type == 2){
+        		json.put("usertype", "ADMIN");
+        	}
+        	
+        	String imagePath = returnUser.getHeadImage();
+        	if (imagePath == null || "".equals(imagePath)) {
+        		imagePath = "/quizGym/userIcon/head.jpg";
+        	}
+        	json.put("usericonurl", imagePath);
         	return json.toString();
+        	
         }
+        
 		return "-1";
 	}
 	
@@ -297,19 +322,6 @@ public class UserRest {
 	}
 	
 	/**
-	 * 更新用户类型，成为prouser
-	 * @param request
-	 * @return
-	 */
-	@GET
-	@Path("/updatetype")
-	@Produces(MediaType.TEXT_PLAIN)
-	public String updateType(@Context HttpServletRequest request) {
-		
-		return "";
-	}
-	
-	/**
 	 * 查询管理员信箱
 	 * @param request
 	 * @return
@@ -330,6 +342,11 @@ public class UserRest {
 		return result.toString();
 	}
 	
+	/**
+	 * 查询用户中心的信息
+	 * @param request
+	 * @return
+	 */
 	@GET
 	@Path("/finduserinfo")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -340,6 +357,44 @@ public class UserRest {
 		User user = userService.findUserByID(Integer.parseInt(userID));
 		JSONObject json = new JSONObject();
 		json.put("username", user.getName());
+		
+		//用户出过的题目
+		String username = user.getName();
+		List<GroupQuestion> listInfos = groupQuestionService.findGroupQuestionByUsername(username);
+		
+		JSONArray array = new JSONArray();
+		
+		for (GroupQuestion g : listInfos) {
+			JSONObject json1 = new JSONObject();
+			json1.put("id", g.getId());
+			json1.put("name", g.getName());
+			json1.put("time", DateUtils.dateToString("yyyy-MM-dd", g.getCreateTime()));
+			
+			if (g.getStatus() == -1) {
+				
+				json1.put("state", "reject");
+			} else if (g.getStatus() == 0){
+				
+				json1.put("state", "wait");
+			} else if (g.getStatus() == 1) {
+				
+				json1.put("state", "pass");
+			}
+			
+			json1.put("reason", g.getReason());
+			array.add(json1);
+		}
+		json.put("userQuiz", array);
+		
+		int type = user.getType();
+		if (type == 0) {
+    		json.put("userType", "NORMAL");
+    	} else if (type == 1) {
+    		json.put("userType", "PRO");
+    	} else if (type == 2){
+    		json.put("userType", "ADMIN");
+    	}
+		
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		String time = sdf.format(user.getCreateTime());
 		json.put("createTime", time);
@@ -455,7 +510,7 @@ public class UserRest {
 		
 		json.put("accuracy", recent);
 		
-		JSONArray array = new JSONArray();
+		JSONArray array1 = new JSONArray();
 		for (DoneInfo doneInfo : doneInfos) {
 			JSONObject j = new JSONObject();
 			if (doneInfo.getType() == 1) {
@@ -482,9 +537,9 @@ public class UserRest {
 						questionService.findRandQuestionType(
 								doneInfo.getId())));
 			}
-			array.add(j);
-		} 
-		json.put("quizRecord", array);
+			array1.add(j);
+		}
+		json.put("quizRecord", array1);
 		return json.toString();
 	}
 	
@@ -494,6 +549,7 @@ public class UserRest {
 	 * @return
 	 * @throws Exception
 	 */
+	@SuppressWarnings("resource")
 	@POST
 	@Path("/saveuserImage")
 	@Produces(MediaType.TEXT_PLAIN)
@@ -508,46 +564,162 @@ public class UserRest {
 		}
 		JSONObject json = JSONObject.fromObject(sb.toString());
 		
-		int userID = Integer.parseInt(json.getString("user_id"));
+		int userID = Integer.parseInt(json.getString("userId"));
 		
 		//获取图片base64二进制流
 		String image = json.getString("image");
 		//图片文件地址
-		String imagePath = null;
-		
-		if (image != null) {
+		String suffix = image.split(",")[0].split("/")[1].split(";")[0];
+		String fileName = null;
+		String imageIO = image.split(",")[1];
+		if (imageIO != null) {
 			BASE64Decoder decoder = new BASE64Decoder();
 			try {
 					// Base64解码
-					byte[] b = decoder.decodeBuffer(image);
+					byte[] b = decoder.decodeBuffer(imageIO);
 					for (int i = 0; i < b.length; ++i) {
 						if (b[i] < 0) {// 调整异常数据
-						b[i] += 256;
+							b[i] += 256;
+						}
 					}
-					imagePath = "/quizGym/userIcon/" + System.currentTimeMillis() + ".jpg";
-					OutputStream os = new FileOutputStream(imagePath);
+					String fatherPath = request.getSession().getServletContext().getRealPath("") + "userIcon";//tomcat下
+					File f = new File(fatherPath);
+					fileName = System.currentTimeMillis() + "." + suffix;
+					File file = new File(f, fileName);
+					if (!file.exists()) {
+						file.createNewFile();
+					}
+					OutputStream os = new FileOutputStream(file);
+					os.write(b);
+					os.flush();
+					f = new File("D:\\MyEclipse\\quizGym\\WebRoot\\userIcon");
+					file = new File(f, fileName);
+					if (!file.exists()) {
+						file.createNewFile();
+					}
+					os = new FileOutputStream(file);
 					os.write(b);
 					os.flush();
 					os.close();
-				}
-			} catch (Exception e) {
-				imagePath = "/quizGym/userIcon/head.jpg";
-				e.printStackTrace();
+					fileName = "/quizGym/userIcon/" + fileName;
+				} catch (Exception e) {
+					fileName = "/quizGym/userIcon/head.jpg";
+					e.printStackTrace();
 			}
 		} else {
-			imagePath = "/quizGym/userIcon/head.jpg";
+			fileName = "/quizGym/userIcon/head.jpg";
 		}
 		
 		//存贮用户头像地址进入数据库
-		userService.updateUserHeadImage(String.valueOf(userID), imagePath);
+		userService.updateUserHeadImage(String.valueOf(userID), fileName);
 		
-		return imagePath;
+		return fileName;
+	}
+	
+	/**
+	 * 申请成为专业用户
+	 * @param request
+	 * @return
+	 */
+	@GET
+	@Path("/applyprouser")
+	@Produces(MediaType.TEXT_HTML)
+	public String applyToPro(@Context HttpServletRequest request) {
+		
+		String username = request.getParameter("userName");
+		String userID = request.getParameter("userId");
+		
+		int power = 0;
+		power = userService.findPower(username);
+		
+		if (power == 0) {
+			User user = userService.findAccount(username);
+			
+			if (user != null) {
+				//如果分数超过100分则认为可以成为ProUser
+				if (user.getScore() > 100) {
+					//更新用户类型
+					userService.updateType(Integer.parseInt(userID), 1);
+					//更新管理员的信箱
+					userService.saveInfo(username, " apply to ProUser");
+					return "200";
+				} else {
+					//没有足够权限成为专业用户
+					return "0";
+				}
+			}
+		} else {
+			return "-2";
+		}
+		
+		return "200";
+	}
+
+	/**
+	 * 用户登出，从session中移除id和用户名
+	 * @param request
+	 * @return
+	 */
+	@GET
+	@Path("/logout")
+	@Produces(MediaType.TEXT_HTML)
+	public String logout(@Context HttpServletRequest request) {
+		try {
+			String userID = request.getParameter("userId");
+			if(userID != null && !"".equals(userID)) {
+				HttpSession session = request.getSession();
+				
+				if (session.getAttribute("userID") != null) {
+					
+					session.removeAttribute("userID");
+				}
+				
+				if (session.getAttribute("username") != null) {
+					
+					session.removeAttribute("username");
+				}
+			}
+			return "200";
+		} catch(Exception e) {
+			return "-1";
+		}
+	}
+	
+	@POST
+	@Path("/submitbugs")
+	@Produces(MediaType.TEXT_HTML)
+	public String submitBugs(@Context HttpServletRequest request) {
+		
+		try {
+			
+			BufferedReader br = new BufferedReader(new InputStreamReader(
+					(ServletInputStream) request.getInputStream()));
+			
+			String line = null;
+			StringBuilder sb = new StringBuilder();
+			while ((line = br.readLine()) != null) {
+				sb.append(line);
+			}
+			JSONObject json = JSONObject.fromObject(sb.toString());
+			String username = json.getString("userName");
+			String content = "submit " + json.getString("content");
+			userService.saveInfo(username, content);
+			
+			return "200";
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+			return "-1";
+		}
+		
 	}
 	
 	@GET
 	@Path("/test")
 	@Produces(MediaType.TEXT_HTML)
 	public String test(@Context HttpServletRequest request) {
-		return new UserRest().findUserInfo(request);
+		return "";
 	}
+	
+	
 }

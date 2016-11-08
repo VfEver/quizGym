@@ -87,4 +87,18 @@ public interface IGroupQuestionDao {
 	 * @return
 	 */
 	public List<Map<String, Integer>> findRandomQuestions(int userID);
+	
+	/**
+	 * prouser的题目通过信息
+	 * @param questionID
+	 * @param status
+	 */
+	public void passGroupQuesion(int groupQuestionID, int status, String reason);
+	
+	/**
+	 * 根据用户名查询此人出过的所有题目
+	 * @param username
+	 * @return
+	 */
+	public List<GroupQuestion> findGroupQuestionByUsername(String username);
 }

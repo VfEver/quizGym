@@ -61,4 +61,19 @@
 		on q.question_id = m.question_id
 		limit 0,1
 	</select>
+	
+	<!-- 存储用户对题目的评论 -->
+	<insert id="saveComment" parameterType="map">
+		insert into question_comment
+		values(#{questionID}, #{userName}, #{userComment}, #{commentTime});
+	</insert>
+	
+	<!-- 查看某个题目的所有评论 -->
+	<select id="findCommentByQuestionID" parameterType="int" resultType="map">
+		select q.user_name as username, q.user_comment as comment, q.commment_time as time, u.head_image as image
+		from question_comment q left join user u
+		on q.user_name = u.user_name
+		where q.question_id = #{id}
+		order by q.commment_time desc
+	</select>
 </mapper>

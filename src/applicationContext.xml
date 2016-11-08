@@ -58,6 +58,13 @@
       	<aop:advisor advice-ref="tx" pointcut-ref="pointcut"/>
       </aop:config>
 	      
+      <bean id="userDaoID" class="com.quizGym.dao.impl.UserDao">
+      	<property name="sqlSessionFactory" ref="sqlSessionFactoryBeanID"></property>
+      </bean>
+      <bean id="userServiceID" class="com.quizGym.service.impl.UserService">
+      	<property name="userDao" ref="userDaoID"></property>
+      </bean>
+
       <!-- 配置type的bean -->
       <bean id="typeDaoID" class="com.quizGym.dao.impl.TypeDao">
       	<property name="sqlSessionFactory" ref="sqlSessionFactoryBeanID"></property>
@@ -78,6 +85,7 @@
       </bean>
       <bean id="questionRestID" class="com.quizGym.rest.QuestionRest">
       	<property name="questionService" ref="questionServiceID"></property>
+      	<property name="userService" ref="userServiceID"></property>
       </bean>
       
       
@@ -94,12 +102,6 @@
       </bean>
       
       <!-- 配置user的bean -->
-      <bean id="userDaoID" class="com.quizGym.dao.impl.UserDao">
-      	<property name="sqlSessionFactory" ref="sqlSessionFactoryBeanID"></property>
-      </bean>
-      <bean id="userServiceID" class="com.quizGym.service.impl.UserService">
-      	<property name="userDao" ref="userDaoID"></property>
-      </bean>
       <bean id="userRestID" class="com.quizGym.rest.UserRest">
       	<property name="userService" ref="userServiceID"></property>
       	<property name="groupQuestionService" ref="groupQuestionServiceID"></property>

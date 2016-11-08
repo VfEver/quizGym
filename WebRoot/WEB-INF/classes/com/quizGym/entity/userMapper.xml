@@ -86,4 +86,6 @@
 		where user_id=#{id};
 	</update>
 	
+	
+	
 </mapper>

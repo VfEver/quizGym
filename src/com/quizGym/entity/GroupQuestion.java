@@ -13,7 +13,15 @@ public class GroupQuestion {
 	private String name;
 	private String createrName;
 	private Date createTime;
+	private int status;
+	private String reason;
 	
+	public String getReason() {
+		return reason;
+	}
+	public void setReason(String reason) {
+		this.reason = reason;
+	}
 	public int getTypeID() {
 		return typeID;
 	}
@@ -43,6 +51,12 @@ public class GroupQuestion {
 	}
 	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
+	}
+	public int getStatus() {
+		return status;
+	}
+	public void setStatus(int status) {
+		this.status = status;
 	}
 	
 }

@@ -124,7 +124,7 @@ public class UserDao implements IUserDao{
 		Map<String, Integer> map = new HashMap<String, Integer>();
 		map.put("id", userID);
 		map.put("type", type);
-		sqlSession.update(User.class.getName() + ".updateScore", map);
+		sqlSession.update(User.class.getName() + ".updateType", map);
 		sqlSession.commit();
 		sqlSession.close();
 	}
@@ -156,6 +156,18 @@ public class UserDao implements IUserDao{
 		map.put("head", imagePath);
 		sqlSession.update(User.class.getName() + ".updateUserHeadImage", map);
 		sqlSession.close();
+	}
+
+	@Override
+	public void saveInfo(String username, String information) {
+		
+		SqlSession sqlSession = sqlSessionFactory.openSession();
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("username", username);
+		map.put("information", information);
+		sqlSession.insert(MailBox.class.getName() + ".saveInfo", map);
+		sqlSession.close();
+		
 	}
 	
 }

@@ -94,4 +94,11 @@ public interface IUserService {
 	 * @param imagePath
 	 */
 	public void updateUserHeadImage(String userID, String imagePath);
+	
+	/**
+	 * 存储通知信息
+	 * @param username
+	 * @param information
+	 */
+	public void saveInfo(String username, String information);
 }

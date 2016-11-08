@@ -9,7 +9,8 @@
 		</div>
 		<hr />
 		<button class="btn btn-lg btn-danger" ng-click="getRandom()">Random</button>
-		<button class="btn btn-lg" ng-click="createQuiz()">create a quiz</button>
+		<button class="btn btn-lg" ng-click="createQuiz()" ng-show="userType === 'PRO' || userType === 'ADMIN'">create a quiz</button>
+		<button class="btn btn-lg" ng-click="applyForPro()" ng-show="userType !== 'PRO' && userType !== 'ADMIN'">Apply for PRO</button>
 	</div>
 	
 	<div class="modal fade" id="createQuizOption">
@@ -25,7 +26,7 @@
 	        <p>input your quiz name:</p>
 	        <input type="text" class="form-control" ng-model="nameOfQuiz">
 	        <br />
-	        <i>tips: your quiz must be with more than 5 questions</i>
+	        <i>tips: your quiz must with more than 5 questions</i>
 	      </div>
 	      <div class="modal-footer">
 	        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -35,7 +36,7 @@
 	  </div><!-- /.modal-dialog -->
 	</div><!-- /.modal -->
 	
-		<div class="modal fade" id="randomQuizModal">
+	<div class="modal fade" id="randomQuizModal">
 	  <div class="modal-dialog" role="document">
 	    <div class="modal-content">
 	      <div class="modal-header">
@@ -73,5 +74,6 @@
 	    </div><!-- /.modal-content -->
 	  </div><!-- /.modal-dialog -->
 	</div><!-- /.modal -->
+</div>
 
 </div>
