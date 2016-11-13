@@ -11,7 +11,7 @@
 		<result property="answerD" column="answerD"/>
 		<result property="rightAnswer" column="right_answer"/>
 		<result property="reason" column="reason"/>
-		<result property="typeID" column="type_id"/>
+		<result property="typeID" column="qt_id"/>
 	</resultMap>
 	
 	<!-- 插入题目 -->
@@ -76,4 +76,27 @@
 		where q.question_id = #{id}
 		order by q.commment_time desc
 	</select>
+	
+	<!-- 删除指定题目id的题目 -->
+	<delete id="deleteQestion">
+		delete
+		from question
+		where question_id in 
+		<foreach collection="list" item="question_id" index="index" open="(" close=")" separator=",">
+			#{question_id}
+		</foreach>
+	</delete>
+	
+	<!-- 根据ID根性question -->
+	<update id="updateQuestionByID" parameterType="map">
+		update question 
+		set question_name = #{name},
+			answerA = #{answerA},
+			answerB = #{answerB},
+			answerC = #{answerC},
+			answerD = #{answerD},
+			right_answer = #{right},
+			reason = #{reason}
+		where question_id = #{id}
+	</update>
 </mapper>

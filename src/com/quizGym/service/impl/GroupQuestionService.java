@@ -1,5 +1,6 @@
 package com.quizGym.service.impl;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -90,6 +91,24 @@ public class GroupQuestionService implements IGroupQuestionService {
 	public List<GroupQuestion> findGroupQuestionByUsername(String username) {
 
 		return groupQuestionDao.findGroupQuestionByUsername(username);
+	}
+
+	@Override
+	public void deleteByID(int groupID) {
+
+		groupQuestionDao.deleteByID(groupID);
+	}
+
+	@Override
+	public void deleteContentByID(int groupID) {
+
+		groupQuestionDao.deleteContentByID(groupID);
+	}
+
+	@Override
+	public void updateGroupByID(String groupID, Date date, String status) {
+
+		groupQuestionDao.updateGroupByID(groupID, date, status);
 	}
 
 }

@@ -89,4 +89,18 @@ public class QuestionService implements IQuestionService {
 		return questionDao.findCommentByQuestionID(questionID);
 	}
 
+	@Override
+	public void deleteQestion(List<Integer> questionIDs) {
+
+		questionDao.deleteQestion(questionIDs);
+	}
+
+	@Override
+	public void updateQuestionByID(String name, String answerA, String answerB,
+			String answerC, String answerD, String right, String reason,
+			String id) {
+
+		questionDao.updateQuestionByID(name, answerA, answerB, answerC, answerD, right, reason, id);
+	}
+
 }

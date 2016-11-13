@@ -6,8 +6,31 @@
 			<p>Get your mind training, improve your professional skills and get better results in a certain field. <br /></p>
 			<p>Terms of Use | Privacy Policy | 2016 © MindDash. All rights reserved.</p>
 		</div>
-		<!-- <div class="footer-right col-md-6">
-			<p><span class=""></span></p>
-		</div> -->
+		<div class="footer-right col-md-6" style="margin-top: 25px;">
+			<img src="/quizGym/ui/zhifubao.png" width="100" height="100" class="pull-right" style="cursor: pointer" ng-click="showDonateModal()">
+			<p class="pull-right donate-link" style="margin-top: 65px;margin-right: 20px;text-decoration: underline;cursor: pointer;" ng-click="showDonateModal()">If you like<br />please donate us</p>
+		</div>
 	</div>
-</div>
+	
+	<div class="modal fade" id="donateModal">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	          <span aria-hidden="true">&times;</span>
+	       	</button>
+	        <h4 class="modal-title">Donate us</h4>
+	      </div>
+	      <div class="modal-body" style="text-align: center">
+	       	<img src="/quizGym/ui/zhifubao.png" width="400" height="400"/>
+	       	<br />
+	       	<br />
+	       	<h3>We will do better, you will get better</h3>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn" data-dismiss="modal">Close</button>
+	      </div>
+	    </div><!-- /.modal-content -->
+	  </div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
+</div>	

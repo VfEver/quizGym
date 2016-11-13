@@ -46,7 +46,7 @@ public interface IUserService {
 	 * @param account
 	 * @return
 	 */
-	public User findAccount(String account);
+	public User findAccount(String account, String email);
 	
 	/**
 	 * 查询用户权限

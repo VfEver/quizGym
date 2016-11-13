@@ -14,7 +14,6 @@ import com.quizGym.dao.IQuestionDao;
 import com.quizGym.entity.Question;
 import com.quizGym.entity.QuestionComment;
 import com.quizGym.entity.RandomQuestion;
-import com.quizGym.util.DateUtils;
 
 public class QuestionDao implements IQuestionDao {
 
@@ -144,6 +143,35 @@ public class QuestionDao implements IQuestionDao {
 		sqlSession.close();
 		
 		return commentList;
+	}
+
+	@Override
+	public void deleteQestion(List<Integer> questionIDs) {
+		
+		SqlSession sqlSession = sqlSessionFactory.openSession();
+		sqlSession.delete(Question.class.getName() + ".deleteQestion", questionIDs);
+		sqlSession.close();
+	}
+
+	@Override
+	public void updateQuestionByID(String name, String answerA, String answerB,
+			String answerC, String answerD, String right, String reason,
+			String id) {
+		
+		SqlSession sqlSession = sqlSessionFactory.openSession();
+		
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("name", name);
+		map.put("answerA", answerA);
+		map.put("answerB", answerB);
+		map.put("answerC", answerC);
+		map.put("answerD", answerD);
+		map.put("right", right);
+		map.put("reason", reason);
+		map.put("id", id);
+		
+		sqlSession.update(Question.class.getName() + ".updateQuestionByID", map);
+		sqlSession.close();
 	}
 
 }

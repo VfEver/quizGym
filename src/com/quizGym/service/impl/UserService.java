@@ -40,9 +40,9 @@ public class UserService implements IUserService {
 	}
 
 	@Override
-	public User findAccount(String account) {
+	public User findAccount(String account, String email) {
 
-		return userDao.findAccount(account);
+		return userDao.findAccount(account, email);
 	}
 
 	@Override

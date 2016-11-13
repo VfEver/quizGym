@@ -9,11 +9,10 @@
 	
 	<!-- 查询管理员的通知信息 -->
 	<select id="findInfo" resultMap="mailBoxMap">
-		select * 
-		from mailbox
+		select * from mailbox order by id desc
 	</select>
 	<!-- 插入通知信息 -->
 	<insert id="saveInfo" parameterType="map">
-		insert into mailbox values(#{username}, #{information});
+		insert into mailbox(username, information) values(#{username}, #{information});
 	</insert>	
 </mapper>

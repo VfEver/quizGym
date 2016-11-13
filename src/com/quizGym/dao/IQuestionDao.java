@@ -88,4 +88,25 @@ public interface IQuestionDao {
 	 */
 	public List<QuestionComment> findCommentByQuestionID(int questionID);
 	
+	/**
+	 * 根据一系列id删除题目
+	 * @param questionIDs
+	 */
+	public void deleteQestion(List<Integer> questionIDs);
+	
+	/**
+	 * 根据id更新问题信息
+	 * @param name
+	 * @param answerA
+	 * @param answerB
+	 * @param answerC
+	 * @param answerD
+	 * @param right
+	 * @param reason
+	 * @param id
+	 */
+	public void updateQuestionByID(String name, String answerA, 
+			String answerB, String answerC, String answerD, 
+			String right, String reason, String id);
+	
 }

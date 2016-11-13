@@ -1,5 +1,6 @@
 package com.quizGym.dao.impl;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -10,6 +11,7 @@ import org.apache.ibatis.session.SqlSessionFactory;
 
 import com.quizGym.dao.IGroupQuestionDao;
 import com.quizGym.entity.GroupQuestion;
+import com.quizGym.util.DateUtils;
 
 public class GroupQuestionDao implements IGroupQuestionDao {
 
@@ -138,6 +140,37 @@ public class GroupQuestionDao implements IGroupQuestionDao {
 		sqlSession.close();
 		
 		return infoLists;
+	}
+
+	@Override
+	public void deleteByID(int groupID) {
+		
+		SqlSession sqlSession = sqlSessionFactory.openSession();
+		sqlSession.delete(GroupQuestion.class.getName() + ".deleteByID", groupID);
+		sqlSession.close();
+		
+	}
+
+	@Override
+	public void deleteContentByID(int groupID) {
+		
+		SqlSession sqlSession = sqlSessionFactory.openSession();
+		sqlSession.delete(GroupQuestion.class.getName() + ".deleteContentByID", groupID);
+		sqlSession.close();
+	}
+
+	@Override
+	public void updateGroupByID(String groupID, Date date, String status) {
+		
+		SqlSession sqlSession = sqlSessionFactory.openSession();
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("createTime", DateUtils.dateToString("yyyy-MM-dd", date));
+		map.put("status", "0");
+		map.put("id", groupID);
+		
+		sqlSession.update(GroupQuestion.class.getName() + ".updateGroupByID", map);
+		
+		sqlSession.close();
 	}
 
 }

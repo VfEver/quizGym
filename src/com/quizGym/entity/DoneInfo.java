@@ -17,6 +17,8 @@ public class DoneInfo {
 	private Date doTime;	//完成时间
 	private String createrName;	//创建人
 	private int userID;	//做题人ID
+	private int rightNum;
+	private int wrongNum;
 
 	public int getType() {
 		return type;
@@ -65,5 +67,17 @@ public class DoneInfo {
 	}
 	public void setUserID(int userID) {
 		this.userID = userID;
+	}
+	public int getRightNum() {
+		return rightNum;
+	}
+	public void setRightNum(int rightNum) {
+		this.rightNum = rightNum;
+	}
+	public int getWrongNum() {
+		return wrongNum;
+	}
+	public void setWrongNum(int wrongNum) {
+		this.wrongNum = wrongNum;
 	}
 }

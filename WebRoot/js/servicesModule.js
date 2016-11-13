@@ -34,7 +34,7 @@ angular.module('servicesModule', [])
 	var get = function() {
 
 		return $http
-				.get('/quizGym/rest/questionrest/findallquestion')
+				.get('/quizGym/rest/groupquestionrest/passgroups')
 				.then(function(data) {
 					questionData = data;
 					return questionData;

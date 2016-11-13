@@ -4,15 +4,20 @@
 		<hr />
 		<div class="col-md-7">
 			<form>
-				<input type="email" placeholder="Email" class="form-control input-lg" name="email" ng-model="signupUserEmail">
-				<input type="text" placeholder="User Name" class="form-control input-lg" name="username" ng-model="signupUserName">
-				<input type="password" placeholder="Password" class="form-control input-lg" name="psw" ng-model="signupUserPassword">
+				<input type="email" placeholder="Email" class="form-control input-lg email-sign" name="email" ng-model="signupUserEmail">
+				<p ng-show="emailInvalidate" style="color: red">Your email has been signuped or has formate error, please change the email</p>
+				<p ng-show="!emailInvalidate && emailInvalidate !== undefined" style="color: green">Your email can be use</p>
+				<input type="text" placeholder="User Name" class="form-control input-lg username-sign" name="username" ng-model="signupUserName">	
+				<p ng-show="userNameUsed" style="color: red">Your username has been signuped, please change the username</p>
+				<p ng-show="usernameInvalidate" style="color: red">Your username has formate error, please make sure the username has 3-50 characters</p>
+				<p ng-show="!usernameInvalidate && usernameInvalidate !== undefined && !userNameUsed && userNameUsed !== undefined" style="color: green">Your username can be use</p>
+				<input type="password" placeholder="Password" class="form-control input-lg password-sign" name="psw" ng-model="signupUserPassword">
+				<p ng-show="passwordInvalidate" style="color: red">Your password has formate error, please make sure the password has 6-20 characters</p>
 				<input type="password" placeholder="Confirm Password" class="form-control input-lg" name="cpsw" ng-model="signupUserConfirm">
-				<button class="btn btn-lg btn-danger" ng-click="signupCheck()">
+				<button class="btn btn-lg btn-danger" ng-click="signupCheck()" ng-disabled="usernameInvalidate || emailInvalidatev || passwordInvalidate">
 					<span class="glyphicon glyphicon-pencil sign-up-icon"></span>
 					Sign up
 				</button>
-				
 			</form>
 		</div>
 		<div class="col-md-5">

@@ -2,11 +2,36 @@ angular.module('lApp', ['ui.router', 'controllersModule', 'servicesModule'])
 .run(function($rootScope, $state, $stateParams) {
     $rootScope.$state = $state;
     $rootScope.$stateParams = $stateParams;
+    
+    $rootScope.sessionChecker = function() {
+    	console.log(sessionStorage.getItem('user'));
+    	console.log(sessionStorage.getItem('user') == 'null');
+    	if (sessionStorage.getItem('user') == 'null' || sessionStorage.getItem('user') == null) {
+    		window.open('/quizGym/#/userlogin', '_self');
+    	}
+    };
 
-    $rootScope.showQuizFn = function(isRandom, scope) {
+    $rootScope.getUserInSession = function() {
+    	return JSON.parse(sessionStorage.getItem('user'));
+    };
+    $rootScope.showQuizFn = function(isRandom, scopeType, userObj, quizObj) {
+    	
+//    	if (window.location.href === 'http://localhost:8080/quizGym/#/doquiz') {
+//    		document.onkeydown =  function(ev) { 			
+//    			if (ev.keyCode === 116) {
+//    				alert('This page cant be refresh!');
+//    				return false;
+//    			}
+//    		};
+//    		
+//    	}
+    	
+    	
+    	console.log(quizObj);
+    	sessionStorage.setItem('disable', 'false');
 		setTimeout(function() {
 				//alert('asd');
-				$('#selectedType').html(scope.scopeType);
+				$('#selectedType').html(scopeType);
 				var quizGeted = [];
 				var index = 0;
 				var indexMax = 0;
@@ -16,7 +41,9 @@ angular.module('lApp', ['ui.router', 'controllersModule', 'servicesModule'])
 				var result = [];
 				var isDisabled = false;
 				(function() {
-					quizGeted = scope.quizData;		
+					//quizGeted = scope.quizData;		
+					quizGeted = quizObj.quizData;
+					console.log(quizGeted);
 					index = 0;
 					indexMax = quizGeted.length - 1;
 					userDidNumber = 0;
@@ -49,7 +76,7 @@ angular.module('lApp', ['ui.router', 'controllersModule', 'servicesModule'])
 								 + '<p>' + questionNumber.answer[2] + '</p>'
 								 + '</label>'
 								 + '<label for="D">'
-								 + '<input type="radio" id="D" name="answer" value="D"/>'
+								 + '<input type="radio" id="D" name="answer" value="D"/>' 
 								 + '<p>' + questionNumber.answer[3] + '</p>'
 								 + '</label>'
 								 + '</div>';
@@ -128,14 +155,15 @@ angular.module('lApp', ['ui.router', 'controllersModule', 'servicesModule'])
 							}
 						}
 						callModal();
+						sessionStorage.setItem('disable', 'true');
 						isDisabled = true;
 						$('input[type="radio"]').prop('disabled', true);
 						$(this).prop('disabled', true);
 
-//						var checkBtn = $('<button class="btn btn-info" id="checkAnswerBtn">Check errors</button>').on('click', function() {
-//							callModal();
-//						});
-//						$('.buttons').append(checkBtn);
+						var checkBtn = $('<button class="btn btn-info" id="checkAnswerBtn">Check errors</button>').on('click', function() {
+							$('#mymodal1').modal();
+						});
+						$('.buttons').append(checkBtn);
 					});
 				}
 
@@ -220,12 +248,12 @@ angular.module('lApp', ['ui.router', 'controllersModule', 'servicesModule'])
 								questionResult.push({
 									"questionId": item.questionId,
 									"result": 1
-								});								
+								});					
 							}
 						});
 
 						var jsonObj = {
-								"user_id": $rootScope.userLoginedId,
+								"user_id": JSON.parse(sessionStorage.getItem('user')).userid,
 								"questionInfo": questionResult
 							};
 //						console.log('random');
@@ -245,14 +273,14 @@ angular.module('lApp', ['ui.router', 'controllersModule', 'servicesModule'])
 							contentType: 'application/json',
 							dataType: 'json',
 							data: {
-								"quiz_id": scope.quizId,
-								"user_id": scope.userId,
+								"quiz_id": quizObj.quizId,
+								"user_id": userObj.userid,
 								"worng_num": quizNumber - number,
 								"correct_num": number
 							}
 						});
 					}
-					
+					console.log(wrongAnswer);
 					if(wrongAnswer.length === 0) {
 						var allCorrectModal = '<h1 style="color: green">All correct！GoodJob!</h1>';
 						$('.modal-body').html('').html(allCorrectModal);
@@ -264,12 +292,14 @@ angular.module('lApp', ['ui.router', 'controllersModule', 'servicesModule'])
 //						console.log(number);
 						$('#myModal1 .modal-body p').eq(0).html('You got <strong style="color:green">' + number + '</strong> correct answers, failed ' + '<strong style="color:red">' + (quizNumber - number) + '</strong> questions');
 						$('#myModal1 .modal-body p').eq(1).find('span').html((number / quizNumber).toFixed(4) * 100 + '%');
-						$('#myModal1').modal();
 					}
+					$('#myModal1').modal();
 
 					$('.check-detail-btn').on('click', function() {
 						$('#myModal').modal('hide');
-						$rootScope.checkDetailData = questionResultCheck;
+//						$rootScope.checkDetailData = questionResultCheck;
+						console.log(questionResultCheck);
+						sessionStorage.setItem('checkDetailData', JSON.stringify(questionResultCheck));
 						setTimeout(function() {
 							$('body').removeClass('modal-open');
 							window.open('/quizGym/#/quizdetail', '_self');

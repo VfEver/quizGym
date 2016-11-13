@@ -179,7 +179,7 @@ public class QuestionRest {
 			json.put("userName", questionComment.getUserName());
 			json.put("content", questionComment.getCommnet());
 			
-			String imagePath = userService.findAccount(questionComment.getUserName()).getHeadImage();
+			String imagePath = userService.findAccount(questionComment.getUserName(), "").getHeadImage();
 			json.put("imageIcon", imagePath);
 			
 			json.put("time", DateUtils.dateToString("yyyy-MM-dd HH:mm:ss", questionComment.getTime()));
@@ -210,7 +210,7 @@ public class QuestionRest {
 			json.put("userName", questionComment.getUserName());
 			json.put("content", questionComment.getCommnet());
 			
-			String imagePath = userService.findAccount(questionComment.getUserName()).getHeadImage();
+			String imagePath = userService.findAccount(questionComment.getUserName(), "").getHeadImage();
 			json.put("imageIcon", imagePath);
 			
 			json.put("time", DateUtils.dateToString("yyyy-MM-dd HH:mm:ss", questionComment.getTime()));

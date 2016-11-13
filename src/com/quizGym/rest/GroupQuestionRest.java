@@ -71,50 +71,79 @@ public class GroupQuestionRest {
 		//转化为json对象
 		JSONObject jsonObject = JSONObject.fromObject(sb.toString());
 		
-		String username = jsonObject.getString("createrName");
-		String typeName = jsonObject.getString("scopeType");
-		int id = TypeUtils.getTypeID(typeName);
-		
-		String groupName = jsonObject.getString("listName");
-		GroupQuestion groupQuestion = new GroupQuestion();
-		Date date = new Date();
-		groupQuestion.setName(groupName);
-		groupQuestion.setCreaterName(username);
-		groupQuestion.setCreateTime(date);
-		groupQuestion.setTypeID(id);
-		//存储套题信息
-		groupQuestionService.saveGroupQuestion(groupQuestion);
-		
-		JSONArray questions = jsonObject.getJSONArray("questions");	
-		int num = 0;
-		for (int i = 0; i != questions.toArray().length; ++i ) {
-			++num;
-			Question question = new Question();
-			JSONObject json = questions.getJSONObject(i);
-			String name = json.getString("question");
-			String rightAnswer = json.getString("correctAnswer");
-			String reason = json.getString("reason");
-			JSONArray options = json.getJSONArray("options");
-			String answerA = (String)options.get(0);
-			String answerB = (String)options.get(1);
-			String answerC = (String)options.get(2);
-			String answerD = (String)options.get(3);
-			question.setAnswerA(answerA);
-			question.setAnswerB(answerB);
-			question.setAnswerC(answerC);
-			question.setAnswerD(answerD);
-			question.setName(name);
-			question.setReason(reason);
-			question.setRightAnswer(rightAnswer);
-			question.setTypeID(id);
-			questionService.saveQuestion(question);
+		//如果存在oldId则说明是更新，则更新当前套题的所有信息
+		String oldId = jsonObject.getString("id");
+		if (!"".equals(oldId)) {
+			groupQuestionService.updateGroupByID(oldId, new Date(), "0");
+			
+			JSONArray questions = jsonObject.getJSONArray("questions");	
+			for (int i = 0; i != questions.toArray().length; ++i ) {
+				
+				JSONObject json = questions.getJSONObject(i);
+				String name = json.getString("question");
+				String rightAnswer = json.getString("correctAnswer");
+				String reason = json.getString("reason");
+				JSONArray options = json.getJSONArray("options");
+				String answerA = (String)options.get(0);
+				String answerB = (String)options.get(1);
+				String answerC = (String)options.get(2);
+				String answerD = (String)options.get(3);
+				String id = json.getString("questionId");
+				questionService.updateQuestionByID(name, answerA, answerB, answerC, answerD, rightAnswer, reason, id);
+				
+			}
+			
+		} else {
+			
+			String username = jsonObject.getString("createrName");
+			String typeName = jsonObject.getString("scopeType");
+			int id = TypeUtils.getTypeID(typeName);
+			
+			String groupName = jsonObject.getString("listName");
+			GroupQuestion groupQuestion = new GroupQuestion();
+			Date date = new Date();
+			groupQuestion.setName(groupName);
+			groupQuestion.setCreaterName(username);
+			groupQuestion.setCreateTime(date);
+			groupQuestion.setTypeID(id);
+			
+			//存储套题信息
+			groupQuestionService.saveGroupQuestion(groupQuestion);
+			
+			JSONArray questions = jsonObject.getJSONArray("questions");	
+			int num = 0;
+			for (int i = 0; i != questions.toArray().length; ++i ) {
+				++num;
+				Question question = new Question();
+				JSONObject json = questions.getJSONObject(i);
+				String name = json.getString("question");
+				String rightAnswer = json.getString("correctAnswer");
+				String reason = json.getString("reason");
+				JSONArray options = json.getJSONArray("options");
+				String answerA = (String)options.get(0);
+				String answerB = (String)options.get(1);
+				String answerC = (String)options.get(2);
+				String answerD = (String)options.get(3);
+				question.setAnswerA(answerA);
+				question.setAnswerB(answerB);
+				question.setAnswerC(answerC);
+				question.setAnswerD(answerD);
+				question.setName(name);
+				question.setReason(reason);
+				question.setRightAnswer(rightAnswer);
+				question.setTypeID(id);
+				questionService.saveQuestion(question);
+			}
+			
+			//存入实际内容
+			int cur_id = groupQuestionService.findMaxID();
+			int questionID = questionService.findMaxID();
+			for (int i = 0; i != num; ++i) {
+				groupQuestionService.saveQuestionContent(cur_id, questionID - i);
+			}
+			
 		}
-
-		int cur_id = groupQuestionService.findMaxID();
-		int questionID = questionService.findMaxID();
-		for (int i = 0; i != num; ++i) {
-			groupQuestionService.saveQuestionContent(cur_id, questionID - i);
-		}
+		
 		return "200";
 	}
 	
@@ -178,6 +207,7 @@ public class GroupQuestionRest {
 			json.put("answer", ans);
 			json.put("result", question.getRightAnswer());
 			json.put("reason", question.getReason());
+			json.put("scope", TypeUtils.getTypeName(question.getTypeID()));
 			++index;
 			result.add(json);
 		}
@@ -231,7 +261,7 @@ public class GroupQuestionRest {
 			json.put("id", groupQuestion.getId());
 			json.put("listName", groupQuestion.getName());
 			json.put("createrName", groupQuestion.getCreaterName());
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM--dd");
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 			String time = sdf.format(groupQuestion.getCreateTime());
 			json.put("createTime", time);
 			int typeID = groupQuestion.getTypeID();
@@ -268,6 +298,7 @@ public class GroupQuestionRest {
 			}
 		}
 		
+		//待审核
 		JSONArray result = new JSONArray();
 		List<GroupQuestion> groups = groupQuestionService.findCheckList();
 		for (GroupQuestion groupQuestion : groups) {
@@ -275,7 +306,7 @@ public class GroupQuestionRest {
 			json.put("id", groupQuestion.getId());
 			json.put("listName", groupQuestion.getName());
 			json.put("createrName", groupQuestion.getCreaterName());
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM--dd");
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 			String time = sdf.format(groupQuestion.getCreateTime());
 			json.put("createTime", time);
 			int typeID = groupQuestion.getTypeID();
@@ -283,7 +314,27 @@ public class GroupQuestionRest {
 			result.add(json);
 		}
 		
-		return result.toString();
+		//已通过
+		JSONArray array = new JSONArray();
+		for (int i = 1; i != 6; ++i) {
+			List<GroupQuestion> list = groupQuestionService.findSpecList(i);
+			for (GroupQuestion g : list) {
+				JSONObject json = new JSONObject();
+				json.put("id", g.getId());
+				json.put("name", g.getName());
+				json.put("time", DateUtils.dateToString("yyyy-MM-dd", g.getCreateTime()));
+				json.put("createrName", g.getCreaterName());
+				
+				int typeID = g.getTypeID();
+				json.put("scope", TypeUtils.getTypeName(typeID));
+				
+				array.add(json);
+			}
+		}
+		JSONObject j = new JSONObject();
+		j.put("quizData", result);
+		j.put("passedQuizData", array);
+		return j.toString();
 	}
 	
 	/**
@@ -302,15 +353,50 @@ public class GroupQuestionRest {
 		JSONArray array = new JSONArray();
 		
 		for (GroupQuestion g : listInfos) {
+			
 			JSONObject json = new JSONObject();
 			json.put("id", g.getId());
 			json.put("name", g.getName());
 			json.put("time", DateUtils.dateToString("yyyy-MM-dd", g.getCreateTime()));
 			json.put("status", g.getStatus());
 			json.put("reason", g.getReason());
+			
+			int typeID = g.getTypeID();
+			json.put("scope", TypeUtils.getTypeName(typeID));
+			
 			array.add(json);
 		}
 		
 		return array.toString();
 	}
+	
+	/**
+	 * 查询管理员界面的审核通过的问题单
+	 * @param request
+	 * @return
+	 */
+	@GET
+	@Path("/passgroups")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String findPassGroups(@Context HttpServletRequest request) {
+		
+		JSONArray array = new JSONArray();
+		for (int i = 1; i != 6; ++i) {
+			List<GroupQuestion> list = groupQuestionService.findSpecList(i);
+			for (GroupQuestion g : list) {
+				JSONObject json = new JSONObject();
+				json.put("id", g.getId());
+				json.put("name", g.getName());
+				json.put("time", DateUtils.dateToString("yyyy-MM-dd", g.getCreateTime()));
+				json.put("createrName", g.getCreaterName());
+				
+				int typeID = g.getTypeID();
+				json.put("scope", TypeUtils.getTypeName(typeID));
+				
+				array.add(json);
+			}
+		}
+		return array.toString();
+	}
+	
 }

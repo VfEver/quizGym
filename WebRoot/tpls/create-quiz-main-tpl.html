@@ -21,7 +21,7 @@
 				</div>
 
 				<div class="question-options row">
-						<label class="col-md-2">Answers:</label>
+						<label class="col-md-2">Options:</label>
 						<div class="col-md-10 ">
 							<input type="text" placeholder="Option A:" class="form-control question-option" ng-model="question.options[0]">
 							<input type="text" placeholder="Option B:" class="form-control question-option" ng-model="question.options[1]">
@@ -54,9 +54,9 @@
 		<hr class="buttons-divider"/>
 		<div class="form-group questions-function-buttons row">
 			<div class="col-md-7 col-md-offset-2">
-				<button class="btn btn-primary add-question" ng-click="addNewQuestion()">add question</button>
-				<button class="btn btn-danger add-question delete-question" ng-click="deleteCurrentQuestion()" ng-disabled="currentIndex == 0">delete current question</button>
-				<button class="btn btn-success submit-quiz" ng-disabled="isNumberEnough" ng-click="submitFn()">submit</button>
+				<button class="btn btn-primary add-question" ng-click="addNewQuestion()" ng-disabled="buttonDisabled">add question</button>
+				<button class="btn btn-danger add-question delete-question" ng-click="deleteCurrentQuestion()" ng-disabled="buttonDisabled">delete current question</button>
+				<button class="btn btn-success submit-quiz" ng-disabled="quiz.length < 5" ng-click="submitFn()">submit</button>
 			</div>
 		</div>
 	

@@ -77,10 +77,13 @@ public class UserDao implements IUserDao{
 	}
 
 	@Override
-	public User findAccount(String account) {
+	public User findAccount(String account, String email) {
 
 		SqlSession sqlSession = sqlSessionFactory.openSession();
-		User user = sqlSession.selectOne(User.class.getName() + ".findAccount", account);
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("name", account);
+		map.put("email", email);
+		User user = sqlSession.selectOne(User.class.getName() + ".findAccount", map);
 		sqlSession.close();
 		return user;
 	}

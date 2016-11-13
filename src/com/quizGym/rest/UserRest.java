@@ -165,6 +165,8 @@ public class UserRest {
 		JSONObject json = new JSONObject();
     	json.put("username", returnUser.getName());
     	json.put("userid", returnUser.getId());
+    	json.put("usericonurl", "/quizGym/userIcon/head.jpg");
+    	json.put("usertype", "NORMAL");
     	return json.toString();
 	}
 	
@@ -263,10 +265,15 @@ public class UserRest {
 	public String judgeOne(@Context HttpServletRequest request) {
 		
 		String username = request.getParameter("username");
+		String useremail = request.getParameter("useremail");
 		User user = null;
 		
-		if (username != null || !"".equals(username)) {
-			user = userService.findAccount(username);
+		if (username == null) {
+			
+			user = userService.findAccount("", useremail);
+		} else if (useremail == null) {
+			
+			user = userService.findAccount(username, "");
 		}
 		
 		if (user == null) {
@@ -357,6 +364,7 @@ public class UserRest {
 		User user = userService.findUserByID(Integer.parseInt(userID));
 		JSONObject json = new JSONObject();
 		json.put("username", user.getName());
+		json.put("userScore", user.getScore());
 		
 		//用户出过的题目
 		String username = user.getName();
@@ -382,6 +390,10 @@ public class UserRest {
 			}
 			
 			json1.put("reason", g.getReason());
+
+			int typeID = g.getTypeID();
+			json1.put("scope", TypeUtils.getTypeName(typeID));
+			
 			array.add(json1);
 		}
 		json.put("userQuiz", array);
@@ -418,23 +430,26 @@ public class UserRest {
 		int science = 0;
 		
 		for (Map<String, Integer> map : randList) {
-			switch(map.get("id")) {
-			case 1: 
-				sport = Integer.parseInt(String.valueOf(map.get("num")));
-				break;
-			case 2:
-				photo = Integer.parseInt(String.valueOf(map.get("num")));
-				break;
-			case 3:
-				music = Integer.parseInt(String.valueOf(map.get("num")));
-				break;
-			case 4:
-				science = Integer.parseInt(String.valueOf(map.get("num")));
-				break;
-			case 5:
-				film = Integer.parseInt(String.valueOf(map.get("num")));
-				break;
-			default : break;
+			if (map.get("id") != null) {
+				
+				switch(map.get("id")) {
+				case 1: 
+					sport = Integer.parseInt(String.valueOf(map.get("num")));
+					break;
+				case 2:
+					photo = Integer.parseInt(String.valueOf(map.get("num")));
+					break;
+				case 3:
+					music = Integer.parseInt(String.valueOf(map.get("num")));
+					break;
+				case 4:
+					science = Integer.parseInt(String.valueOf(map.get("num")));
+					break;
+				case 5:
+					film = Integer.parseInt(String.valueOf(map.get("num")));
+					break;
+				default : break;
+				}
 			}
 		}
 		
@@ -459,17 +474,24 @@ public class UserRest {
 		List<Map<String, Integer>> recentDone = groupQuestionService.findDoneRecent(Integer.parseInt(userID));
 		
 		for (Map<String, Integer> map : recentDone) {
-			int temp = map.get("r")*100/(map.get("r") + map.get("w"));
+			
+			int rightNum = map.get("r");
+			int wrongNum = map.get("w");
+			
+			int temp = rightNum*100/(rightNum + wrongNum);
 			recent.add(temp);
 			
 			DoneInfo doneInfo = new DoneInfo();
 			doneInfo.setType(1);
 			doneInfo.setAccuracy(temp);
 			doneInfo.setId(map.get("groupID"));
+			doneInfo.setRightNum(rightNum);
+			doneInfo.setWrongNum(wrongNum);
 			
 			String str = String.valueOf(map.get("time"));
 			sdf= new SimpleDateFormat("yyyy-MM-dd");
 			Date t;
+			
 			try {
 				t = sdf.parse(str);
 				doneInfo.setDoTime(t);
@@ -479,7 +501,7 @@ public class UserRest {
 			
 			GroupQuestion group = groupQuestionService.findByID(map.get("groupID"));
 			doneInfo.setCreaterName(group.getCreaterName());
-			doneInfo.setScopeType(TypeUtils.getTypeName(group.getId()));
+			doneInfo.setScopeType(TypeUtils.getTypeName(group.getTypeID()));
 			doneInfo.setName(group.getName());
 			doneInfo.setUserID(map.get("userID"));
 			doneInfos.add(doneInfo);
@@ -487,12 +509,18 @@ public class UserRest {
 		
 		List<Map<String, Integer>> randomRecentDone = groupQuestionService.findRandomQuestions(Integer.parseInt(userID));
 		for (Map<String, Integer> map : randomRecentDone) {
+			
 			DoneInfo doneInfo = new DoneInfo();
 			
-			int temp = map.get("r")*100/(map.get("r") + map.get("w"));
+			int rightNum = map.get("r");
+			int wrongNum = map.get("w");
+			
+			int temp = rightNum*100/(rightNum + wrongNum);
 			doneInfo.setAccuracy(temp);
 			doneInfo.setType(0);
 			doneInfo.setId(map.get("randomID"));
+			doneInfo.setRightNum(rightNum);
+			doneInfo.setWrongNum(wrongNum);
 			
 			String str = String.valueOf(map.get("time"));
 			sdf= new SimpleDateFormat("yyyy-MM-dd");
@@ -537,6 +565,10 @@ public class UserRest {
 						questionService.findRandQuestionType(
 								doneInfo.getId())));
 			}
+			
+			j.put("rightNum", doneInfo.getRightNum());
+			j.put("wrongNum", doneInfo.getWrongNum());
+			
 			array1.add(j);
 		}
 		json.put("quizRecord", array1);
@@ -549,7 +581,6 @@ public class UserRest {
 	 * @return
 	 * @throws Exception
 	 */
-	@SuppressWarnings("resource")
 	@POST
 	@Path("/saveuserImage")
 	@Produces(MediaType.TEXT_PLAIN)
@@ -592,7 +623,11 @@ public class UserRest {
 					OutputStream os = new FileOutputStream(file);
 					os.write(b);
 					os.flush();
+					os.close();
 					f = new File("D:\\MyEclipse\\quizGym\\WebRoot\\userIcon");
+					if (!f.exists()) {
+						f.mkdir();
+					}
 					file = new File(f, fileName);
 					if (!file.exists()) {
 						file.createNewFile();
@@ -633,7 +668,7 @@ public class UserRest {
 		power = userService.findPower(username);
 		
 		if (power == 0) {
-			User user = userService.findAccount(username);
+			User user = userService.findAccount(username, "");
 			
 			if (user != null) {
 				//如果分数超过100分则认为可以成为ProUser

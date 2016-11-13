@@ -54,7 +54,7 @@
 	<select id="findKeyList" parameterType="string" resultMap="groupQuestionMap">
 		select * 
 		from group_question
-		where  group_name like #{name}
+		where  group_name like #{name} and status = 1
 	</select>
 	
 	<!-- 查询需要审核的题目单 -->
@@ -109,5 +109,21 @@
 		from group_question
 		where creater_name = #{name}
 	</select>
+	
+	<!-- 根据id删除套题信息 -->
+	<delete id="deleteByID" parameterType="int">
+		delete  from group_question where group_id = #{id};
+	</delete>
+	
+	<!-- 根据id删除对应的题目信息 -->
+	<delete id="deleteContentByID" parameterType="int">
+		delete from group_content where group_id = #{id};
+	</delete>
+	
+	<!-- 根据套题id更新套题 -->
+	<update id="updateGroupByID" parameterType="map">
+		update group_question set create_time = #{createTime}, status = #{status} 
+		where group_id = #{id} 
+	</update>
 	
 </mapper>

@@ -1,5 +1,6 @@
 package com.quizGym.dao;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -101,4 +102,24 @@ public interface IGroupQuestionDao {
 	 * @return
 	 */
 	public List<GroupQuestion> findGroupQuestionByUsername(String username);
+	
+	/**
+	 * 根据id删除套题信息
+	 * @param groupID
+	 */
+	public void deleteByID(int groupID);
+	
+	/**
+	 * 根据id删除对应的题目信息
+	 * @param groupID
+	 */
+	public void deleteContentByID(int groupID);
+	
+	/**
+	 * 根据id更新套题信息
+	 * @param groupID
+	 * @param date
+	 * @param status
+	 */
+	public void updateGroupByID(String groupID, Date date, String status);
 }
