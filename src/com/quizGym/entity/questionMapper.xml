@@ -55,9 +55,10 @@
 	<select id="findRandQuestionType" parameterType="int" resultType="int">
 		select q.qt_id
 		from question as q right join 
-		(select u.question_id, u.random_id = #{id}
+		(select u.question_id, u.random_id
 		from uq_random_middle u inner join ur_middle r
-		on u.random_id = r.random_id) as m
+		on u.random_id = r.random_id
+		where u.random_id = #{id}) as m
 		on q.question_id = m.question_id
 		limit 0,1
 	</select>
@@ -87,7 +88,7 @@
 		</foreach>
 	</delete>
 	
-	<!-- 根据ID根性question -->
+	<!-- 根据ID更新question -->
 	<update id="updateQuestionByID" parameterType="map">
 		update question 
 		set question_name = #{name},

@@ -173,4 +173,14 @@ public class GroupQuestionDao implements IGroupQuestionDao {
 		sqlSession.close();
 	}
 
+	@Override
+	public int findRandomQuestionID(int randomID) {
+
+		SqlSession sqlSession = sqlSessionFactory.openSession();
+		int id = sqlSession.selectOne(GroupQuestion.class.getName() + ".findRandomQuestionID", randomID);
+		sqlSession.close();
+		
+		return id;
+	}
+
 }

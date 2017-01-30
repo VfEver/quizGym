@@ -107,7 +107,7 @@
 			<div class="admin-mail-info col-md-12 pull-right" >
 				<ul>
 					<li ng-repeat="mail in mailData" class="mail-item">
-						<p># - {{mailData.length - $index + 1}}</p>
+						<p># - {{mailData.length - $index}}</p>
 						<p style="display: inline-block">{{mail.username}} {{mail.information}} </p>
 						<!-- <button class="btn btn-success pull-right">同意</button> -->
 					</li>
@@ -198,7 +198,7 @@
 						<td>OPTIOJND</td>
 						<td>ANSWER</td>
 						<td>REASON</td>
-						<td>FILED</td>
+						<td>FIELD</td>
 					</thead>
 					<tr ng-repeat="question in listData">
 						<td style="min-width: 200px; max-width: 300px;">{{question.question}}</td>

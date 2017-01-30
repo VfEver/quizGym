@@ -2,7 +2,7 @@
 	<div class="container">
 		<h3>Quiz Detail</h3>
 		<div class="btn-group">
-			<button class="btn check-detail-nav-btn" ng-repeat="button in checkDetailData" ng-class="{'btn-success': button.userResult === button.result, 'btn-danger': button.userResult !== button.result, 'btn-border': $index === currentIndex}" ng-click="jumpToFn($index)">{{$index + 1}}</button>
+			<button class="btn check-detail-nav-btn" ng-repeat="button in checkDetailData" ng-class="{'btn-success': button.userResult === button.result, 'btn-danger': button.userResult !== button.result}" ng-click="jumpToFn($index)">{{$index + 1}}</button>
 		</div>
 		<hr />
 		<h3>{{checkDetailData[currentIndex].question}}</h3>

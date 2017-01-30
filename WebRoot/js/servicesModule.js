@@ -47,11 +47,6 @@ angular.module('servicesModule', [])
 .factory('GetUserInfo', function($http) {
 	var userData = {};
 	var get = function(userId) {
-//		return $http.get('/quizGym/rest/userrest/finduserinfo', {userId: '1'})
-//				.then(function(data) {
-//					userData = data;
-//					return userData;
-//				});
 		return $http({
 			method: 'GET',
 			url: '/quizGym/rest/userrest/finduserinfo',

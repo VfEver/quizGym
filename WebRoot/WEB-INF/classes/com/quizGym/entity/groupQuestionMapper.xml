@@ -66,7 +66,7 @@
 	
 	<!-- 查询某个用户做过的某种类型所有题目的正确错误个数 -->
 	<select id="findDoneInfo" parameterType="map" resultType="java.util.HashMap">
-		select count(u.wrong_num) as w, count(u.right_num) as r
+		select sum(u.wrong_num) as w, sum(u.right_num) as r
 		from group_question g inner join ug_collect_middle u
 		on g.group_id=u.group_id
 		where g.type_id=#{typeID} and u.user_id = #{userID}
@@ -82,6 +82,7 @@
 		from ug_collect_middle u
 		where u.user_id = #{id}
 		order by u.done_time
+		asc
 		<!-- limit 0,10 -->
 	</select>
 	
@@ -93,7 +94,8 @@
 			   u.right_num as r,
 			   u.wrong_num as w
 		from ur_middle u
-		where user_id = #{id};
+		where user_id = #{id}
+		order by time desc;
 	</select>
 	
 	<!-- prouser的套题信息通过或者不通过 -->
@@ -125,5 +127,15 @@
 		update group_question set create_time = #{createTime}, status = #{status} 
 		where group_id = #{id} 
 	</update>
+	
+	<!-- 查询随机题目的id -->
+	<select id="findRandomQuestionID" parameterType="int" resultType="int">
+		select r.question_id
+		from ur_middle u right join uq_random_middle r
+		on u.random_id = r.random_id
+		where r.random_id = #{id}
+		limit 0,1
+	</select>
+	
 	
 </mapper>

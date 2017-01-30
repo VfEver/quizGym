@@ -111,4 +111,10 @@ public class GroupQuestionService implements IGroupQuestionService {
 		groupQuestionDao.updateGroupByID(groupID, date, status);
 	}
 
+	@Override
+	public int findRandomQuestionID(int randomID) {
+
+		return groupQuestionDao.findRandomQuestionID(randomID);
+	}
+
 }

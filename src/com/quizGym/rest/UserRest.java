@@ -455,16 +455,44 @@ public class UserRest {
 		
 		//
 		List<Long> rate = new ArrayList<Long>();
-		rate.add(Long.parseLong(String.valueOf(list.get(1).get("w"))) + 
-				Long.parseLong(String.valueOf(list.get(1).get("r"))) + photo);
-		rate.add(Long.parseLong(String.valueOf(list.get(2).get("w"))) + 
-				Long.parseLong(String.valueOf(list.get(2).get("r"))) + music);
-		rate.add(Long.parseLong(String.valueOf(list.get(0).get("w"))) + 
-				Long.parseLong(String.valueOf(list.get(0).get("r"))) + sport);
-		rate.add(Long.parseLong(String.valueOf(list.get(4).get("w"))) + 
-				Long.parseLong(String.valueOf(list.get(4).get("r"))) + film);
-		rate.add(Long.parseLong(String.valueOf(list.get(3).get("w"))) + 
-				Long.parseLong(String.valueOf(list.get(3).get("r"))) + science);
+		if (list.get(1) != null) {
+			
+			rate.add(Long.parseLong(String.valueOf(list.get(1).get("w"))) + 
+					Long.parseLong(String.valueOf(list.get(1).get("r"))) + photo);
+		} else {
+			rate.add((long)photo);
+		}
+		
+		if (list.get(2) != null) {
+			
+			rate.add(Long.parseLong(String.valueOf(list.get(2).get("w"))) + 
+					Long.parseLong(String.valueOf(list.get(2).get("r"))) + music);
+		} else {
+			rate.add((long) music);
+		}
+		
+		if (list.get(0) != null) {
+					
+			rate.add(Long.parseLong(String.valueOf(list.get(0).get("w"))) + 
+					Long.parseLong(String.valueOf(list.get(0).get("r"))) + sport);
+		} else {
+			rate.add((long) sport);
+		}
+		if (list.get(4) != null) {
+			
+			rate.add(Long.parseLong(String.valueOf(list.get(4).get("w"))) + 
+					Long.parseLong(String.valueOf(list.get(4).get("r"))) + film);
+		} else {
+			rate.add((long) film);
+		}
+		if (list.get(3) != null) {
+			
+			rate.add(Long.parseLong(String.valueOf(list.get(3).get("w"))) + 
+					Long.parseLong(String.valueOf(list.get(3).get("r"))) + science);
+		} else {
+			rate.add((long) science);
+		}
+		
 		json.put("filedRate", rate);
 		
 		//最近做过的题组
@@ -532,7 +560,8 @@ public class UserRest {
 				e.printStackTrace();
 			}
 			
-			doneInfo.setScopeType("");
+			doneInfo.setScopeType("");  //
+			
 			doneInfos.add(doneInfo);
 		}
 		

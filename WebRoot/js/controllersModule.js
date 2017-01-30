@@ -9,6 +9,7 @@ angular.module('controllersModule', [])
 		console.log(window.location.href);
 		if (window.location.href === 'http://localhost:8080/quizGym/#/doquiz' || window.location.href === 'http://localhost:8080/quizGym/#/createquiz') {
 			if (window.location.href === 'http://localhost:8080/quizGym/#/doquiz') {
+				
 				if (sessionStorage.getItem('disable') === 'true') {
 					$location.path('/quizmain');
 					return;
@@ -49,10 +50,6 @@ angular.module('controllersModule', [])
 			console.log(typeof data);
 			if (data !== -1) {
 			
-//				$rootScope.userLoginedName = data.username;
-//				$rootScope.userLoginedId = data.userid;
-//				$rootScope.userLoginedType = data.usertype;
-//				$rootScope.userLoginedIcon = data.usericonurl;
 				var userLoginedObj = {
 						username: data.username,
 						userid: data.userid,
@@ -82,7 +79,6 @@ angular.module('controllersModule', [])
 				$scope.usernameInvalidate = true;
 			});
 		} else {
-			console.log('length gou le');
 			$scope.$apply(function() {
 				$scope.usernameInvalidate = false;
 			});
@@ -112,7 +108,6 @@ angular.module('controllersModule', [])
 				$scope.passwordInvalidate = true;
 			});
 		} else {
-			console.log('length gou le');
 			$scope.$apply(function() {
 				$scope.passwordInvalidate = false;
 			});
@@ -125,7 +120,6 @@ angular.module('controllersModule', [])
 		}
 		var reg = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
 		if (!reg.test($scope.signupUserEmail.trim())) {
-			console.log('error');
 			$scope.$apply(function() {
 				$scope.emailInvalidate = true;
 			});
@@ -160,6 +154,11 @@ angular.module('controllersModule', [])
 			alert('please fill all the blank');
 			return;
 		}
+		
+//		if (!$scope.usernameInvalidate || !$scope.userNameUsed || !$scope.emailInvalidate) {
+//			alert('please pay attention to the errors');
+//			return ;
+//		}
 		
 		if ($scope.signupUserPassword === $scope.signupUserConfirm) {
 			$.ajax({
@@ -208,6 +207,7 @@ angular.module('controllersModule', [])
 		var number = Math.floor(Math.random() * 5 + 1);
 		var quizScopes = ['photography', 'music', 'film', 'science', 'sports'];
 		$scope.scopeType = quizScopes[number - 1];
+		sessionStorage.setItem('quizScopeSelected', $scope.scopeType);
 		var quizNumber = $('input[type="radio"]:checked').val();
 		setTimeout(function() {
 			$.ajax({

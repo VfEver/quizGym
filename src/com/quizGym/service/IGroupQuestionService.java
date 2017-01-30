@@ -120,4 +120,11 @@ public interface IGroupQuestionService {
 	 * @param status
 	 */
 	public void updateGroupByID(String groupID, Date date, String status);
+	
+	/**
+	 * 随机题目的id
+	 * @param randomID
+	 * @return
+	 */
+	public int findRandomQuestionID(int randomID);
 }

@@ -4,8 +4,6 @@ angular.module('lApp', ['ui.router', 'controllersModule', 'servicesModule'])
     $rootScope.$stateParams = $stateParams;
     
     $rootScope.sessionChecker = function() {
-    	console.log(sessionStorage.getItem('user'));
-    	console.log(sessionStorage.getItem('user') == 'null');
     	if (sessionStorage.getItem('user') == 'null' || sessionStorage.getItem('user') == null) {
     		window.open('/quizGym/#/userlogin', '_self');
     	}
@@ -16,18 +14,6 @@ angular.module('lApp', ['ui.router', 'controllersModule', 'servicesModule'])
     };
     $rootScope.showQuizFn = function(isRandom, scopeType, userObj, quizObj) {
     	
-//    	if (window.location.href === 'http://localhost:8080/quizGym/#/doquiz') {
-//    		document.onkeydown =  function(ev) { 			
-//    			if (ev.keyCode === 116) {
-//    				alert('This page cant be refresh!');
-//    				return false;
-//    			}
-//    		};
-//    		
-//    	}
-    	
-    	
-    	console.log(quizObj);
     	sessionStorage.setItem('disable', 'false');
 		setTimeout(function() {
 				//alert('asd');
@@ -161,7 +147,8 @@ angular.module('lApp', ['ui.router', 'controllersModule', 'servicesModule'])
 						$(this).prop('disabled', true);
 
 						var checkBtn = $('<button class="btn btn-info" id="checkAnswerBtn">Check errors</button>').on('click', function() {
-							$('#mymodal1').modal();
+							
+							$('#myModal1').modal();
 						});
 						$('.buttons').append(checkBtn);
 					});
@@ -195,40 +182,9 @@ angular.module('lApp', ['ui.router', 'controllersModule', 'servicesModule'])
 					}
 
 					var questionResultCheck = quizGeted.slice(0);
-					// console.log(userAnswer)
 					userAnswer.forEach(function(item, index) {
 						questionResultCheck[index].userResult = item;
 					});
-					// questionResultCheck.forEach(function(item, index) {
-					// 	var flag = false;
-					// 	for (var i = 0; i < wrongAnswer.length; i++) {
-					// 		if (item.questionId === wrongAnswer[i].id) {
-					// 			questionResultCheck[index].user
-					// 			break;
-					// 		}
-					// 	}
-					// });
-
-					// quizGeted.forEach(function(item, index) {
-					// 	var flag = false;
-					// 	for (var i = 0; i < wrongAnswer.length; i++) {
-					// 		if (item.questionId === wrongAnswer[i].id) {
-					// 			questionResultCheck.push({
-					// 				"questionId": item.questionId,
-					// 				"result": 0,
-					// 				""
-					// 			});
-					// 			flag = true;
-					// 			break;
-					// 		}
-					// 	}
-					// 	if (!flag) {
-					// 		questionResultCheck.push({
-					// 			"questionId": item.questionId,
-					// 			"result": 1
-					// 		});								
-					// 	}
-					// });
 
 					if (isRandom) {
 						var questionResult = [];
@@ -256,8 +212,6 @@ angular.module('lApp', ['ui.router', 'controllersModule', 'servicesModule'])
 								"user_id": JSON.parse(sessionStorage.getItem('user')).userid,
 								"questionInfo": questionResult
 							};
-//						console.log('random');
-//						console.log(jsonObj);
 						$.ajax({
 							url: '/quizGym/rest/userrest/savedonequestion',
 							method: 'POST',
@@ -266,8 +220,6 @@ angular.module('lApp', ['ui.router', 'controllersModule', 'servicesModule'])
 							data: JSON.stringify(jsonObj)
 						});
 					} else {
-//						console.log('not random');
-//						console.log(jsonObj);
 						$.ajax({
 							url:  '/quizGym/rest/userrest/savedonelist',
 							contentType: 'application/json',
@@ -291,7 +243,7 @@ angular.module('lApp', ['ui.router', 'controllersModule', 'servicesModule'])
 //						oModalFooterPre.html('');
 //						console.log(number);
 						$('#myModal1 .modal-body p').eq(0).html('You got <strong style="color:green">' + number + '</strong> correct answers, failed ' + '<strong style="color:red">' + (quizNumber - number) + '</strong> questions');
-						$('#myModal1 .modal-body p').eq(1).find('span').html((number / quizNumber).toFixed(4) * 100 + '%');
+						$('#myModal1 .modal-body p').eq(1).find('span').html((number * 100/ quizNumber).toFixed(2) + '%');
 					}
 					$('#myModal1').modal();
 
